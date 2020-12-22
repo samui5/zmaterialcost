@@ -19,9 +19,9 @@
 			        <Input value="{local>/newEntry/Cost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
 			        <Label text="Labor Cost" required="true"/>
 			        <Input value="{local>/newEntry/Laborcost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
-			        <Label text="Emission Cost" required="true"/>
-			        <Input value="{local>/newEntry/Emissioncost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
-			        <Label text="Average Cost" required="true"/>
+			        <Label text="Machine Cost" required="true"/>
+			        <Input value="{local>/newEntry/Machinecost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Label text="Unit Cost" required="true"/>
 			        <Text text="{local>/newEntry/Avgcost}"/>
 				</f:content>
 			</f:SimpleForm>

@@ -72,10 +72,10 @@
 								<Text text="Labor Cost"/>
 							</Column>
 							<Column id="idEmissionCost">
-								<Text text="Emission Cost"/>
+								<Text text="Machine Cost"/>
 							</Column>
 							<Column id="idAvgCost">
-								<Text text="Average Cost"/>
+								<Text text="Unit Cost"/>
 							</Column>
 							<Column id="idbtns">
 								<Text text="Options"/>
