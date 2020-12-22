@@ -1,0 +1,34 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Add New Material" contentHeight="auto" contentWidth="auto" busyIndicatorDelay="0">
+		<content>
+			<f:SimpleForm class="editableForm" columnsL="1" columnsM="1" editable="true" emptySpanL="4" emptySpanM="4" id="secureDetailsForm"
+				labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" maxContainerCols="2">
+				<f:content>
+					<Label text="Location" required="true"/>
+			        <Input value="{local>/newEntry/Location}" valueLiveUpdate="true"/>
+					<Label text="Collector" required="true"/>
+			        <Input value="{local>/newEntry/Collector}" valueLiveUpdate="true"/>
+			        <Label text="Material" required="true"/>
+			        <Input value="{local>/newEntry/Material}" valueLiveUpdate="true"/>
+			        <Label text="EndDate" required="true"/>
+			        <DatePicker id="inqDate" 
+                				displayFormat="MM/dd/yyyy" dateValue="{local>/newEntry/Enddate}" ></DatePicker>
+			        <Label text="Quantity" required="true"/>
+			        <Input value="{local>/newEntry/Quantity}" type="Number" valueLiveUpdate="true"/>
+			        <Label text="Cost" required="true"/>
+			        <Input value="{local>/newEntry/Cost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Label text="Labor Cost" required="true"/>
+			        <Input value="{local>/newEntry/Laborcost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Label text="Emission Cost" required="true"/>
+			        <Input value="{local>/newEntry/Emissioncost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Label text="Average Cost" required="true"/>
+			        <Text text="{local>/newEntry/Avgcost}"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="Create" press="onPressHandleSecureOkPopup"/>
+			<Button text="Cancel" press="onPressHandleSecureCancelPopup"/>
+		</buttons>
+	</Dialog>	
+</core:FragmentDefinition>

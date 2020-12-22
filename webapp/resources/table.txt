@@ -1,0 +1,26 @@
+@EndUserText.label : 'Collector Cost Table'
+@AbapCatalog.enhancementCategory : #NOT_CLASSIFIED
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #ALLOWED
+define table zcollector_cost {
+  key mandt    : mandt not null;
+  key guid     : abap.char(32) not null;
+  location     : abap.char(255);
+  collector    : abap.char(255);
+  material     : abap.char(255);
+  enddate      : abap.dats;
+  @Semantics.quantity.unitOfMeasure : 'zcollector_cost.units'
+  quantity     : abap.quan(3,0);
+  @Semantics.amount.currencyCode : 'zcollector_cost.currency'
+  cost         : abap.curr(10,2);
+  @Semantics.amount.currencyCode : 'zcollector_cost.currency'
+  laborcost    : abap.curr(10,2);
+  @Semantics.amount.currencyCode : 'zcollector_cost.currency'
+  emissioncost : abap.curr(10,2);
+  @Semantics.amount.currencyCode : 'zcollector_cost.currency'
+  avgcost      : abap.curr(10,2);
+  currency     : abap.cuky;
+  units        : abap.unit(2);
+
+}
