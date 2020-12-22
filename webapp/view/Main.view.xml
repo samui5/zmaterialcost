@@ -1,4 +1,4 @@
-<mvc:View controllerName="demo.app.excelZUIExcel.controller.Main" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+<mvc:View controllerName="demo.app.matcost.controller.Main" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:u="sap.ui.unified" displayBlock="true" xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:core="sap.ui.core">
 	<App>
 		<pages>

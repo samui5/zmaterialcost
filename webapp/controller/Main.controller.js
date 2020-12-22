@@ -7,12 +7,12 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
 	"sap/ui/model/Filter",
-	"demo/app/excelZUIExcel/model/formatter",
-	"demo/app/excelZUIExcel/util/jszip"
+	"demo/app/matcost/model/formatter",
+	"demo/app/matcost/util/jszip"
 ], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter) {
 	"use strict";
 
-	return Controller.extend("demo.app.excelZUIExcel.controller.Main", {
+	return Controller.extend("demo.app.matcost.controller.Main", {
 		onInit: function(){
 				var oJson = new JSONModel();
 				oJson.setData({data: [],  newEntry: {
@@ -113,7 +113,7 @@ sap.ui.define([
 			//lo_alv->set_table_for_first_display
 			//MessageBox.confirm("this functionality is under construction");
 			if(this.inpField.indexOf("Zzmatprod") !== -1){
-				this.cityPopup = sap.ui.xmlfragment("demo.app.excelZUIExcel.fragments.popup", this);	
+				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/ValueHelpSet",
 					filters: [new Filter("Key", "EQ","M-")],
@@ -127,7 +127,7 @@ sap.ui.define([
 				this.getView().addDependent(this.cityPopup);
 				this.cityPopup.open();
 			}else{
-				this.cityPopup = sap.ui.xmlfragment("demo.app.excelZUIExcel.fragments.popup", this);	
+				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/ValueHelpSet",
 					filters: [new Filter("Key", "EQ","L-")],
@@ -185,7 +185,7 @@ sap.ui.define([
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
 			this.localModel.setProperty("/newEntry", this.localModel.getProperty(this.editPath));
 			if (!this._oDialogSecure) {
-				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.excelZUIExcel.fragments.createEntry", this);
+				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.matcost.fragments.createEntry", this);
 				this.getView().addDependent(this._oDialogSecure);
 			}
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
@@ -249,7 +249,7 @@ sap.ui.define([
 		_oDialogSecure: null,
 		onAdd: function(oEvent){
 			if (!this._oDialogSecure) {
-				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.excelZUIExcel.fragments.createEntry", this);
+				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.matcost.fragments.createEntry", this);
 				this.getView().addDependent(this._oDialogSecure);
 			}
 			var newEntry = {

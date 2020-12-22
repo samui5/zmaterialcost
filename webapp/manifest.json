@@ -1,7 +1,7 @@
 {
 	"_version": "1.7.0",
 	"sap.app": {
-		"id": "demo.app.excelZUIExcel",
+		"id": "demo.app.matcost",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {
@@ -46,7 +46,7 @@
 	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "demo.app.excelZUIExcel.view.Main",
+			"viewName": "demo.app.matcost.view.Main",
 			"type": "XML"
 		},
 		"dependencies": {
@@ -69,7 +69,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "demo.app.excelZUIExcel.i18n.i18n"
+					"bundleName": "demo.app.matcost.i18n.i18n"
 				}
 			},
 			"": {
