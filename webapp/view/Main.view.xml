@@ -17,17 +17,17 @@
 				<content>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="CollectorSet" search="onFilterSearch">
 						<smartFilterBar:controlConfiguration>
-							<smartFilterBar:ControlConfiguration key="Material" index="1" label="Material" groupId="_BASIC" width="300px"
+							<smartFilterBar:ControlConfiguration key="Zzmatprod" index="1" label="Part Produced" groupId="_BASIC" width="300px"
 								visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
-									<Input id="Material" showValueHelp="true" 
+									<Input id="Zzcostcol" showValueHelp="true" 
 									valueHelpRequest="onValueHelp"></Input>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
-							<smartFilterBar:ControlConfiguration key="Location" index="2" label="Location" groupId="_BASIC" width="300px"
+							<smartFilterBar:ControlConfiguration key="Zzlocation" index="2" label="Location" groupId="_BASIC" width="300px"
 								visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
-									<Input id="Location" showValueHelp="true" 
+									<Input id="Zzlocation" showValueHelp="true" 
 									valueHelpRequest="onValueHelp"></Input>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
@@ -85,15 +85,15 @@
 						<items>
 							<ColumnListItem>
 								<cells>
-									<Text text="{local>Location}"></Text>
-									<Text text="{local>Collector}"></Text>
-									<Text text="{local>Material}"></Text>
-									<Text text="{path : 'local>Enddate', formatter: '.formatter.getSAPFormattedDate'}"></Text>
-									<Text text="{local>Quantity}"></Text>
-									<Text text="{local>Cost}"></Text>
-									<Text text="{local>Laborcost}"></Text>
+									<Text text="{local>Zzlocation}"></Text>
+									<Text text="{local>Zzcostcol}"></Text>
+									<Text text="{local>Zzmatprod}"></Text>
+									<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}"></Text>
+									<Text text="{local>Zzqtyprods}"></Text>
+									<Text text="{local>Zzmatcosts}"></Text>
+									<Text text="{local>Zzlabcosts}"></Text>
 									<Text text="{local>Emissioncost}"></Text>
-									<Text text="{local>Avgcost}"></Text>
+									<Text text="{local>Zzunitcosts}"></Text>
 									<HBox>
 										<Button icon="sap-icon://edit" press="onEdit"></Button>
 										<Button class="sapUiTinyMarginBegin" icon="sap-icon://delete" press="onDelete"></Button>

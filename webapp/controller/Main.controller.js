@@ -16,17 +16,16 @@ sap.ui.define([
 		onInit: function(){
 				var oJson = new JSONModel();
 				oJson.setData({data: [],  newEntry: {
-					Guid : "",
-					Location:"",
-					Collector:"",
-					Material:"",
-					Enddate: new Date(),
-					Quantity:0,
-					Cost:0,
-					Laborcost:0,
-					Emissioncost:0,
-					Avgcost:0,
-					Units: ""
+					Zzlocation:"",
+					Zzcostcol:"",
+					Zzmatprod:"",
+					Zzenddate: new Date(),
+					Zzqtyprods:0,
+					Zzmatcosts:0,
+					Zzlabcosts:0,
+					Zzmchcosts:0,
+					Zzunitcosts:0,
+					Zcurrency: ""
 				}})		;
 				this.getView().setModel(oJson,"local");
 				this.localModel = oJson;
@@ -38,24 +37,24 @@ sap.ui.define([
 		deleteRecords: [],
 		onLiveChange: function(){
 			var sValues = 	this.localModel.getProperty("/newEntry");
-			if(sValues.Quantity <= 0 || !sValues.Quantity){
+			if(sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods){
 				return;
 			}
-			sValues.Avgcost = ( parseFloat(sValues.Cost) + parseFloat(sValues.Laborcost) + parseFloat(sValues.Emissioncost) ) / sValues.Quantity;
-			var newVal = parseFloat(sValues.Avgcost).toFixed(2);
-			this.localModel.setProperty("/newEntry/Avgcost", newVal);
+			sValues.Zzunitcosts = ( parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts) ) / parseFloat(sValues.Zzqtyprods);
+			var newVal = parseFloat(sValues.Zzunitcosts).toFixed(2);
+			this.localModel.setProperty("/newEntry/Zzunitcosts", newVal);
 		},
 		onCellChange: function(oEvent){
 			var currentRow = oEvent.getSource().getParent();
-			var quantity = currentRow.getCells()[4].getValue();
-			var cost = currentRow.getCells()[5].getValue();
+			var Zzqtyprods = currentRow.getCells()[4].getValue();
+			var Zzmatcosts = currentRow.getCells()[5].getValue();
 			var labor = currentRow.getCells()[6].getValue();
 			var emission = currentRow.getCells()[7].getValue();
-			var calcVal = parseFloat(cost) + parseFloat(labor) + parseFloat(emission);
-			if(quantity <= 0 || !quantity){
+			var calcVal = parseFloat(Zzmatcosts) + parseFloat(labor) + parseFloat(emission);
+			if(Zzqtyprods <= 0 || !Zzqtyprods){
 				return;
 			}
-			var final = parseFloat(calcVal / quantity).toFixed(2);
+			var final = parseFloat(calcVal / parseFloat(Zzqtyprods)).toFixed(2);
 			currentRow.getCells()[8].setText(final);
 		},
 		onCancel: function(){
@@ -70,16 +69,16 @@ sap.ui.define([
 		onFilterSearch: function(){
 			var that = this;
 			
-			if(this.getView().byId("Material").getValue() !== ""){
+			if(this.getView().byId("Zzmatprod").getValue() !== ""){
 				this.oDataModel.read("/MatCollAllSet",{
-					filters: [new Filter("Material", "EQ", this.getView().byId("Material").getValue())],
+					filters: [new Filter("Zzmatprod", "EQ", this.getView().byId("Zzmatprod").getValue())],
 					success: function(data){
 						that.localModel.setProperty("/data",data.results);
 					}
 				});
-			}else if (this.getView().byId("Location").getValue() !== ""){
+			}else if (this.getView().byId("Zzlocation").getValue() !== ""){
 				this.oDataModel.read("/MatCollAllSet",{
-					filters: [new Filter("Location", "EQ", this.getView().byId("Location").getValue())],
+					filters: [new Filter("Zzlocation", "EQ", this.getView().byId("Zzlocation").getValue())],
 					success: function(data){
 						that.localModel.setProperty("/data",data.results);
 					}
@@ -100,10 +99,10 @@ sap.ui.define([
 				var sTitle = selectedItem.getLabel();
 				sap.ui.getCore().byId(this.inpField).setValue(sTitle);
 				var that = this;
-				if(this.inpField.indexOf("Material") !== -1){
-					this.getView().byId("Location").setValue("");
+				if(this.inpField.indexOf("Zzmatprod") !== -1){
+					this.getView().byId("Zzlocation").setValue("");
 				}else{
-					this.getView().byId("Material").setValue("");
+					this.getView().byId("Zzmatprod").setValue("");
 				}
 				
 				
@@ -113,7 +112,7 @@ sap.ui.define([
 			this.inpField = oEvent.getSource().getId();
 			//lo_alv->set_table_for_first_display
 			//MessageBox.confirm("this functionality is under construction");
-			if(this.inpField.indexOf("Material") !== -1){
+			if(this.inpField.indexOf("Zzmatprod") !== -1){
 				this.cityPopup = sap.ui.xmlfragment("demo.app.excelZUIExcel.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/ValueHelpSet",
@@ -164,14 +163,14 @@ sap.ui.define([
 		},
 		onPressHandleSecureOkPopup: function(){
 			var sValues = this.localModel.getProperty("/newEntry");
-			if(sValues.Cost === 0 || sValues.Cost === "" || sValues.Material === "" || sValues.Collector === "" || sValues.Location === ""){
+			if(sValues.Zzmatcosts === 0 || sValues.Zzmatcosts === "" || sValues.Zzmatprod === "" || sValues.Zzcostcol === "" || sValues.Zzlocation === ""){
 				MessageBox.error("Please enter valid value");
 				return;
 			}
 			var clonedData = JSON.parse(JSON.stringify(sValues));
-			clonedData.Enddate =  new Date(clonedData.Enddate);
+			clonedData.Zzenddate =  new Date(clonedData.Zzenddate);
 			if(this.editPath){
-				clonedData.Units = "U";
+				clonedData.Zcurrency = "U";
 				this.localModel.setProperty(this.editPath, clonedData);
 				this.editPath = "";
 			}else{
@@ -183,7 +182,7 @@ sap.ui.define([
 		},
 		onEdit: function(oEvent){
 			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
-			this.localModel.setProperty(this.editPath + "/Enddate", new Date(this.localModel.getProperty(this.editPath).Enddate));
+			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
 			this.localModel.setProperty("/newEntry", this.localModel.getProperty(this.editPath));
 			if (!this._oDialogSecure) {
 				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.excelZUIExcel.fragments.createEntry", this);
@@ -195,9 +194,9 @@ sap.ui.define([
 		onDelete: function(oEvent){
 			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
 			var record = this.localModel.getProperty(this.editPath);
-			record.Units = "D";
+			record.Zcurrency = "D";
 			this.localModel.setProperty(this.editPath, record);
-			this.getView().byId("idTable").getBinding("items").filter([new sap.ui.model.Filter("Units", "NE", "D")]);
+			this.getView().byId("idTable").getBinding("items").filter([new sap.ui.model.Filter("Zcurrency", "NE", "D")]);
 		},
 		onPressHandleSecureCancelPopup: function(){
 			this._oDialogSecure.close();
@@ -239,8 +238,8 @@ sap.ui.define([
 		},
 		onSearch: function(oEvent){
 			var search = oEvent.getParameter("query");
-			var oFilter1 = new sap.ui.model.Filter("Location", sap.ui.model.FilterOperator.Contains, search);
-			var oFilter2 = new sap.ui.model.Filter("Material", sap.ui.model.FilterOperator.Contains, search);
+			var oFilter1 = new sap.ui.model.Filter("Zzlocation", sap.ui.model.FilterOperator.Contains, search);
+			var oFilter2 = new sap.ui.model.Filter("Zzmatprod", sap.ui.model.FilterOperator.Contains, search);
 			var oFilter = new sap.ui.model.Filter({
 				filters: [oFilter1, oFilter2],
 				and: false
@@ -255,16 +254,16 @@ sap.ui.define([
 			}
 			var newEntry = {
 					Guid : "",
-					Location:"",
-					Collector:"",
-					Material:"",
-					Enddate: new Date(),
-					Quantity:0,
-					Cost:0,
-					Laborcost:0,
-					Emissioncost:0,
-					Avgcost:0,
-					Units: ""
+					Zzlocation:"",
+					Zzcostcol:"",
+					Zzmatprod:"",
+					Zzenddate: new Date(),
+					Zzqtyprods:0,
+					Zzmatcosts:0,
+					Zzlabcosts:0,
+					Zzmchcosts:0,
+					Zzunitcosts:0,
+					Zcurrency: ""
 				};
 			this.localModel.setProperty("/newEntry", newEntry);
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
@@ -275,7 +274,7 @@ sap.ui.define([
 			var aData = JSON.parse(JSON.stringify(xData));
 			debugger;
 			for(var i = 0;i<aData.length;i++){
-				aData[i].Enddate = this.formatDate(aData[i].Enddate);
+				aData[i].Zzenddate = this.formatDate(aData[i].Zzenddate);
 			}
 			//var base64Str = Buffer.from(JSON.stringify(aData)).toString("base64");
 			var base64Str = btoa(decodeURIComponent(JSON.stringify(aData)));
@@ -302,22 +301,22 @@ sap.ui.define([
 
 					});
 					for (var i=0; i<excelData.length; i++) {
-						excelData[i].Avgcost = parseFloat(( parseInt(excelData[i].Cost)   + parseInt(excelData[i].Laborcost)  + parseInt(excelData[i].Emissioncost) ) / parseInt(excelData[i].Quantity)).toFixed(2);                         
-						excelData[i].Units = "N";
+						excelData[i].Zzunitcosts = parseFloat(( parseInt(excelData[i].Zzqtyprods)   + parseInt(excelData[i].Zzlabcosts)  + parseInt(excelData[i].Zzmchcosts) ) / parseInt(excelData[i].Zzqtyprods)).toFixed(2);                         
+						excelData[i].Zcurrency = "N";
 					}
 					// Setting the data to the local model 
 					that.localModel.setData({
 						data: JSON.parse(JSON.stringify(excelData)),
 						newEntry: {
-							Location:"",
-							Collector:"",
-							Material:"",
-							EndDate: new Date(),
-							Quantity:0,
-							Cost:0,
-							LaborCost:0,
-							EmissionCost:0,
-							AvgCost:0
+							Zzlocation:"",
+							Zzcostcol:"",
+							Zzmatprod:"",
+							Zzenddate: new Date(),
+							Zzqtyprods:0,
+							Zzmatcosts:0,
+							Zzlabcosts:0,
+							Zzmchcosts:0,
+							Zzunitcosts:0
 						}
 					});
 					that.localModel.refresh(true);

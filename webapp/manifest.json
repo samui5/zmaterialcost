@@ -14,8 +14,8 @@
 			"version": "0.0.0"
 		},
 		"dataSources": {
-			"ZCOLLECTOR_COST_SRV": {
-				"uri": "/sap/opu/odata/sap/ZCOLLECTOR_COST_SRV/",
+			"ZMM_DT_COST_COLL_SRV": {
+				"uri": "/sap/opu/odata/sap/ZMM_DT_COST_COLL_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -79,7 +79,7 @@
 					"defaultBindingMode": "OneTime",
 					"defaultCountMode": "Request"
 				},
-				"dataSource": "ZCOLLECTOR_COST_SRV",
+				"dataSource": "ZMM_DT_COST_COLL_SRV",
 				"preload": true
 			}
 		},
