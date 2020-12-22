@@ -253,7 +253,6 @@ sap.ui.define([
 				this.getView().addDependent(this._oDialogSecure);
 			}
 			var newEntry = {
-					Guid : "",
 					Zzlocation:"",
 					Zzcostcol:"",
 					Zzmatprod:"",

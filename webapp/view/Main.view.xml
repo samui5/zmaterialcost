@@ -39,7 +39,7 @@
 						</smartFilterBar:layoutData>
 					</smartFilterBar:SmartFilterBar>
 					<Table id="idTable" width="auto" class="sapUiResponsiveMargin" noDataText="{worklistView>/tableNoDataText}" 
-						items="{path : 'local>/data', filters: [{path: 'Units', operator: 'NE', value1: 'D'}]}">
+						items="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">
 						<headerToolbar>
 							<Toolbar>
 								<Title id="idTopTitle" text="Upload Data"/>
@@ -92,7 +92,7 @@
 									<Text text="{local>Zzqtyprods}"></Text>
 									<Text text="{local>Zzmatcosts}"></Text>
 									<Text text="{local>Zzlabcosts}"></Text>
-									<Text text="{local>Emissioncost}"></Text>
+									<Text text="{local>Zzmchcosts}"></Text>
 									<Text text="{local>Zzunitcosts}"></Text>
 									<HBox>
 										<Button icon="sap-icon://edit" press="onEdit"></Button>
