@@ -20,7 +20,7 @@
 							<smartFilterBar:ControlConfiguration key="Zzmatprod" index="1" label="Part Produced" groupId="_BASIC" width="300px"
 								visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
-									<Input id="Zzcostcol" showValueHelp="true" 
+									<Input id="Zzmatprod" showValueHelp="true" 
 									valueHelpRequest="onValueHelp"></Input>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>

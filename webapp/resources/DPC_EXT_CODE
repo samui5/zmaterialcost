@@ -1,0 +1,522 @@
+CLASS zcl_zmm_dt_cost_coll_dpc_ext DEFINITION
+  PUBLIC
+  INHERITING FROM zcl_zmm_dt_cost_coll_dpc
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+  PROTECTED SECTION.
+    METHODS collectorset_create_entity
+        REDEFINITION .
+    METHODS collectorset_get_entity
+        REDEFINITION .
+    METHODS collectorset_get_entityset
+        REDEFINITION .
+    METHODS matcollallset_create_entity
+        REDEFINITION .
+    METHODS matcollallset_delete_entity
+        REDEFINITION .
+    METHODS matcollallset_get_entityset
+        REDEFINITION .
+    METHODS matcollallset_update_entity
+        REDEFINITION .
+    METHODS matcollectorset_get_entityset
+        REDEFINITION .
+    METHODS valuehelpset_get_entityset
+        REDEFINITION .
+    METHODS matcollallset_get_entity
+        REDEFINITION .
+private section.
+
+  class-methods CONVERT_BASE64_TO_XML
+    importing
+      !I_BASE64 type STRING
+    returning
+      value(E_XML) type STRING .
+  class-methods CONVERT_XML_TO_BASE64
+    importing
+      !I_XML type STRING
+    returning
+      value(E_BASE64) type STRING .
+ENDCLASS.
+
+
+
+CLASS ZCL_ZMM_DT_COST_COLL_DPC_EXT IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->COLLECTORSET_CREATE_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY_C(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IO_DATA_PROVIDER               TYPE REF TO /IWBEP/IF_MGW_ENTRY_PROVIDER(optional)
+* | [<---] ER_ENTITY                      TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TS_COLLECTOR
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD collectorset_create_entity.
+
+    DATA : itab        TYPE ztt_ZMM_AM_COST_COLL,
+           ls_entity   TYPE zcl_zmm_dt_cost_coll_mpc=>ts_collector,
+           lv_json_str TYPE string,
+           lv_base     TYPE string.
+
+    "delete from ZMM_AM_COST_COLL.
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data =  ls_entity
+    ).
+
+    lv_base = ls_entity-value.
+*     CATCH /iwbep/cx_mgw_tech_exception. " mgw technical exception
+*    cl_start_utility=>convert_xml_to_base64( i_xml =  ).
+    lv_json_str = zcl_zmm_dt_cost_coll_dpc_ext=>convert_base64_to_xml( i_base64 = lv_base ).
+
+    /ui2/cl_json=>deserialize(
+      EXPORTING
+         json             =  lv_json_str     " JSON string
+*         jsonx            =                  " JSON XString
+*         pretty_name      =                  " Pretty Print property names
+*         assoc_arrays     =                  " Deserialize associative array as tables with unique keys
+*         assoc_arrays_opt =                  " Optimize rendering of name value maps
+*         name_mappings    =                  " ABAP<->JSON Name Mapping Table
+*         conversion_exits =                  " Use DDIC conversion exits on deserialize of values
+      CHANGING
+        data             =   itab               " Data to serialize
+    ).
+
+*
+
+    LOOP AT itab ASSIGNING FIELD-SYMBOL(<fs2>) WHERE ZCURRENCY = 'D'.
+      DELETE FROM zmm_am_cost_coll WHERE  ZZLOCATION = <fs2>-ZZLOCATION and
+                                          ZZCOSTCOL = <fs2>-ZZCOSTCOL and
+                                          ZZMATPROD = <fs2>-ZZMATPROD and
+                                          ZZENDDATE = <fs2>-ZZENDDATE.
+    ENDLOOP.
+    DELETE itab WHERE ZCURRENCY = 'D'.
+
+    LOOP AT itab ASSIGNING FIELD-SYMBOL(<FS>).
+      <FS>-zcurrency = ''.
+    ENDLOOP.
+
+    MODIFY zmm_am_cost_coll  FROM TABLE itab.
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->COLLECTORSET_GET_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_REQUEST_OBJECT              TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY(optional)
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [<---] ER_ENTITY                      TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TS_COLLECTOR
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_ENTITY_CNTXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD collectorset_get_entity.
+
+
+    DATA : itab        TYPE ztt_ZMM_AM_COST_COLL,
+           ls_entity   TYPE zcl_zmm_dt_cost_coll_mpc=>ts_collector,
+           lv_json_str TYPE string,
+           lv_base     TYPE string.
+
+    SELECT * FROM zmm_am_cost_coll INTO TABLE itab.
+
+    /ui2/cl_json=>serialize(
+      EXPORTING
+        data             =   itab               " Data to serialize
+       RECEIVING
+         r_json           =  lv_json_str                " JSON string
+    ).
+
+    er_entity-value =  zcl_zmm_dt_cost_coll_dpc_ext=>convert_xml_to_base64( i_xml = lv_json_str ).
+    er_entity-key = 'ZYX'.
+
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->COLLECTORSET_GET_ENTITYSET
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_FILTER_SELECT_OPTIONS       TYPE        /IWBEP/T_MGW_SELECT_OPTION
+* | [--->] IS_PAGING                      TYPE        /IWBEP/S_MGW_PAGING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IT_ORDER                       TYPE        /IWBEP/T_MGW_SORTING_ORDER
+* | [--->] IV_FILTER_STRING               TYPE        STRING
+* | [--->] IV_SEARCH_STRING               TYPE        STRING
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITYSET(optional)
+* | [<---] ET_ENTITYSET                   TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TT_COLLECTOR
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_CONTEXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD collectorset_get_entityset.
+
+    DATA : itab        TYPE ztt_ZMM_AM_COST_COLL,
+           ls_entity   TYPE zcl_zmm_dt_cost_coll_mpc=>ts_collector,
+           lv_json_str TYPE string,
+           lv_base     TYPE string.
+
+    SELECT * FROM zmm_am_cost_coll INTO TABLE itab.
+
+    /ui2/cl_json=>serialize(
+      EXPORTING
+        data             =   itab               " Data to serialize
+       RECEIVING
+         r_json           =  lv_json_str                " JSON string
+    ).
+
+    ls_entity-value =  zcl_zmm_dt_cost_coll_dpc_ext=>convert_xml_to_base64( i_xml = lv_json_str ).
+    ls_entity-key = 'ZYX'.
+
+    APPEND ls_entity TO et_entityset.
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Private Method ZCL_ZMM_DT_COST_COLL_DPC_EXT=>CONVERT_BASE64_TO_XML
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] I_BASE64                       TYPE        STRING
+* | [<-()] E_XML                          TYPE        STRING
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method CONVERT_BASE64_TO_XML.
+    data: utility type ref to cl_http_utility.
+    create object utility.
+    call method utility->decode_base64
+      exporting
+        encoded = i_base64    " BASE64-Encoded String
+      receiving
+        decoded = e_xml.   " Decoded string
+    e_xml =  utility->unescape_url( escaped   = e_xml options   = 2 ).
+  endmethod.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Private Method ZCL_ZMM_DT_COST_COLL_DPC_EXT=>CONVERT_XML_TO_BASE64
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] I_XML                          TYPE        STRING
+* | [<-()] E_BASE64                       TYPE        STRING
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  method CONVERT_XML_TO_BASE64.
+        data: utility type ref to cl_http_utility.
+    create object utility.
+
+
+    e_base64 =  utility->escape_url(
+       exporting
+         unescaped =  i_xml   " Unencoded String
+         options   = 2
+     ).
+    call method utility->encode_base64
+      exporting
+        unencoded = e_base64    " Unencoded String
+      receiving
+        encoded   = e_base64.    " BASE64-Encoded String
+  endmethod.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->MATCOLLALLSET_CREATE_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY_C(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IO_DATA_PROVIDER               TYPE REF TO /IWBEP/IF_MGW_ENTRY_PROVIDER(optional)
+* | [<---] ER_ENTITY                      TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TS_MATCOLLALL
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD matcollallset_create_entity.
+**try.
+*CALL METHOD SUPER->MATCOLLALLSET_CREATE_ENTITY
+*  EXPORTING
+*    IV_ENTITY_NAME          =
+*    IV_ENTITY_SET_NAME      =
+*    IV_SOURCE_NAME          =
+*    IT_KEY_TAB              =
+**    io_tech_request_context =
+*    IT_NAVIGATION_PATH      =
+**    io_data_provider        =
+**  importing
+**    er_entity               =
+*    .
+**  catch /iwbep/cx_mgw_busi_exception.
+**  catch /iwbep/cx_mgw_tech_exception.
+**endtry.
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->MATCOLLALLSET_DELETE_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY_D(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD matcollallset_delete_entity.
+**try.
+*CALL METHOD SUPER->MATCOLLALLSET_DELETE_ENTITY
+*  EXPORTING
+*    IV_ENTITY_NAME          =
+*    IV_ENTITY_SET_NAME      =
+*    IV_SOURCE_NAME          =
+*    IT_KEY_TAB              =
+**    io_tech_request_context =
+*    IT_NAVIGATION_PATH      =
+*    .
+**  catch /iwbep/cx_mgw_busi_exception.
+**  catch /iwbep/cx_mgw_tech_exception.
+**endtry.
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->MATCOLLALLSET_GET_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_REQUEST_OBJECT              TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY(optional)
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [<---] ER_ENTITY                      TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TS_MATCOLLALL
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_ENTITY_CNTXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD matcollallset_get_entity.
+
+
+    READ TABLE it_key_tab INTO DATA(ls_key) INDEX 1.
+    READ TABLE it_key_tab INTO DATA(ls_key2) INDEX 2.
+    READ TABLE it_key_tab INTO DATA(ls_key3) INDEX 3.
+    READ TABLE it_key_tab INTO DATA(ls_key4) INDEX 4.
+
+    SELECT SINGLE * FROM zmm_am_cost_coll INTO @DATA(ls_entity) WHERE ZZLOCATION = @ls_key-value and
+                                          ZZCOSTCOL = @ls_key2-value and
+                                          ZZMATPROD = @ls_key3-value and
+                                          ZZENDDATE = @ls_key4-value.
+
+    MOVE-CORRESPONDING ls_entity TO er_entity.
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->MATCOLLALLSET_GET_ENTITYSET
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_FILTER_SELECT_OPTIONS       TYPE        /IWBEP/T_MGW_SELECT_OPTION
+* | [--->] IS_PAGING                      TYPE        /IWBEP/S_MGW_PAGING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IT_ORDER                       TYPE        /IWBEP/T_MGW_SORTING_ORDER
+* | [--->] IV_FILTER_STRING               TYPE        STRING
+* | [--->] IV_SEARCH_STRING               TYPE        STRING
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITYSET(optional)
+* | [<---] ET_ENTITYSET                   TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TT_MATCOLLALL
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_CONTEXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD matcollallset_get_entityset.
+
+    READ TABLE it_filter_select_options INTO DATA(ls_filters) INDEX 1.
+    READ TABLE ls_filters-select_options INTO DATA(ls_value) INDEX 1.
+
+    IF ls_filters-property = 'Zzmatprod'.
+      CONDENSE ls_value-low.
+      SELECT * FROM zmm_am_cost_coll INTO CORRESPONDING FIELDS OF
+        TABLE @et_entityset WHERE ZZMATPROD = @ls_value-low.
+    ELSEIF ls_filters-property = 'Zzlocation'.
+      CONDENSE ls_value-low.
+      SELECT * FROM zmm_am_cost_coll INTO CORRESPONDING FIELDS OF
+        TABLE @et_entityset WHERE ZZLOCATION = @ls_value-low
+        .
+    ELSE.
+      CONDENSE ls_value-low.
+      SELECT * FROM zmm_am_cost_coll INTO CORRESPONDING FIELDS OF
+        TABLE @et_entityset
+        .
+    ENDIF.
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->MATCOLLALLSET_UPDATE_ENTITY
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITY_U(optional)
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IO_DATA_PROVIDER               TYPE REF TO /IWBEP/IF_MGW_ENTRY_PROVIDER(optional)
+* | [<---] ER_ENTITY                      TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TS_MATCOLLALL
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD matcollallset_update_entity.
+
+    DATA: ls_data   TYPE zmm_am_cost_coll,
+          ls_entity TYPE zcl_zmm_dt_cost_coll_mpc=>ts_matcollall.
+
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_entity
+    ).
+
+    MOVE-CORRESPONDING ls_entity TO ls_data.
+
+    MODIFY zmm_am_cost_coll FROM ls_data.
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->MATCOLLECTORSET_GET_ENTITYSET
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_FILTER_SELECT_OPTIONS       TYPE        /IWBEP/T_MGW_SELECT_OPTION
+* | [--->] IS_PAGING                      TYPE        /IWBEP/S_MGW_PAGING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IT_ORDER                       TYPE        /IWBEP/T_MGW_SORTING_ORDER
+* | [--->] IV_FILTER_STRING               TYPE        STRING
+* | [--->] IV_SEARCH_STRING               TYPE        STRING
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITYSET(optional)
+* | [<---] ET_ENTITYSET                   TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TT_MATCOLLECTOR
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_CONTEXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD matcollectorset_get_entityset.
+
+    READ TABLE it_filter_select_options INTO DATA(ls_filters) INDEX 1.
+
+    READ TABLE ls_filters-select_options INTO DATA(ls_value) INDEX 1.
+
+    IF ls_filters-property = 'Zzmatprod'.
+      REPLACE 'M-' INTO ls_value-low WITH ''.
+      CONDENSE ls_value-low.
+      SELECT Zzmatprod, 'Multi' AS Zzlocation, AVG( Zzunitcosts ) AS Zzunitcosts FROM zmm_am_cost_coll INTO CORRESPONDING FIELDS OF
+        TABLE @et_entityset WHERE Zzmatprod = @ls_value-low
+        GROUP BY Zzmatprod.
+    ELSEIF ls_filters-property = 'Zzlocation'.
+      REPLACE 'L-' INTO ls_value-low WITH ''.
+      CONDENSE ls_value-low.
+      SELECT Zzmatprod, @ls_value-low AS Zzlocation, AVG( Zzunitcosts ) AS Zzunitcosts FROM zmm_am_cost_coll INTO CORRESPONDING FIELDS OF
+        TABLE @et_entityset WHERE Zzlocation = @ls_value-low
+        GROUP BY Zzmatprod
+        .
+    ELSE.
+      REPLACE 'L-' INTO ls_value-low WITH ''.
+      CONDENSE ls_value-low.
+      SELECT Zzmatprod, @ls_value-low AS Zzlocation, AVG( Zzunitcosts ) AS Zzunitcosts FROM zmm_am_cost_coll INTO CORRESPONDING FIELDS OF
+        TABLE @et_entityset WHERE Zzlocation = @ls_value-low
+        GROUP BY Zzmatprod
+        .
+    ENDIF.
+
+
+
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Protected Method ZCL_ZMM_DT_COST_COLL_DPC_EXT->VALUEHELPSET_GET_ENTITYSET
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IV_ENTITY_NAME                 TYPE        STRING
+* | [--->] IV_ENTITY_SET_NAME             TYPE        STRING
+* | [--->] IV_SOURCE_NAME                 TYPE        STRING
+* | [--->] IT_FILTER_SELECT_OPTIONS       TYPE        /IWBEP/T_MGW_SELECT_OPTION
+* | [--->] IS_PAGING                      TYPE        /IWBEP/S_MGW_PAGING
+* | [--->] IT_KEY_TAB                     TYPE        /IWBEP/T_MGW_NAME_VALUE_PAIR
+* | [--->] IT_NAVIGATION_PATH             TYPE        /IWBEP/T_MGW_NAVIGATION_PATH
+* | [--->] IT_ORDER                       TYPE        /IWBEP/T_MGW_SORTING_ORDER
+* | [--->] IV_FILTER_STRING               TYPE        STRING
+* | [--->] IV_SEARCH_STRING               TYPE        STRING
+* | [--->] IO_TECH_REQUEST_CONTEXT        TYPE REF TO /IWBEP/IF_MGW_REQ_ENTITYSET(optional)
+* | [<---] ET_ENTITYSET                   TYPE        ZCL_ZMM_DT_COST_COLL_MPC=>TT_VALUEHELP
+* | [<---] ES_RESPONSE_CONTEXT            TYPE        /IWBEP/IF_MGW_APPL_SRV_RUNTIME=>TY_S_MGW_RESPONSE_CONTEXT
+* | [!CX!] /IWBEP/CX_MGW_BUSI_EXCEPTION
+* | [!CX!] /IWBEP/CX_MGW_TECH_EXCEPTION
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD valuehelpset_get_entityset.
+
+    DATA ls_entity TYPE zcl_zmm_dt_cost_coll_mpc=>ts_valuehelp.
+
+    READ TABLE it_filter_select_options INTO DATA(ls_filter) INDEX 1.
+
+    READ TABLE ls_filter-select_options INTO DATA(ls_values) INDEX 1.
+
+    SPLIT ls_values-low AT '-' INTO TABLE DATA(itab).
+
+    DESCRIBE TABLE itab.
+
+    READ TABLE itab INTO DATA(ls_type) INDEX 1.
+
+    IF ls_type CO 'M'.
+      SELECT DISTINCT Zzmatprod FROM zmm_am_cost_coll INTO TABLE @DATA(lt_mats).
+    ELSE.
+      SELECT DISTINCT Zzlocation FROM zmm_am_cost_coll INTO TABLE @DATA(lt_locs).
+    ENDIF.
+
+    IF sy-tfill > 1.
+      READ TABLE itab INTO DATA(lv_lookup) INDEX 2.
+      lv_lookup =  '%' && lv_lookup && '%'.
+      IF ls_type CO 'M'.
+        LOOP AT lt_mats INTO DATA(ls_mats) WHERE Zzmatprod CP lv_lookup.
+          ls_entity = CORRESPONDING #( ls_mats MAPPING key = Zzmatprod text = Zzmatprod ).
+        ENDLOOP.
+      ELSE.
+        LOOP AT lt_locs INTO DATA(ls_locs) WHERE Zzlocation CP lv_lookup.
+          ls_entity = CORRESPONDING #( ls_mats MAPPING key = Zzmatprod text = Zzmatprod ).
+        ENDLOOP.
+      ENDIF.
+      APPEND ls_entity TO et_entityset.
+    ELSE.
+
+      IF ls_type CO 'M'.
+        et_entityset = CORRESPONDING #( lt_mats MAPPING key = Zzmatprod text = Zzmatprod ).
+      ELSE.
+        et_entityset = CORRESPONDING #( lt_locs MAPPING key = Zzlocation text = Zzlocation ).
+      ENDIF.
+
+    ENDIF.
+
+
+
+  ENDMETHOD.
+ENDCLASS.
