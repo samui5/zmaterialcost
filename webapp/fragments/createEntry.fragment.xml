@@ -8,14 +8,14 @@
 			        <Input value="{local>/newEntry/Location}" valueLiveUpdate="true"/>
 					<Label text="Collector" required="true"/>
 			        <Input value="{local>/newEntry/Collector}" valueLiveUpdate="true"/>
-			        <Label text="Material" required="true"/>
+			        <Label text="Part Produced" required="true"/>
 			        <Input value="{local>/newEntry/Material}" valueLiveUpdate="true"/>
 			        <Label text="EndDate" required="true"/>
 			        <DatePicker id="inqDate" 
                 				displayFormat="MM/dd/yyyy" dateValue="{local>/newEntry/Enddate}" ></DatePicker>
-			        <Label text="Quantity" required="true"/>
+			        <Label text="Quantity Produced" required="true"/>
 			        <Input value="{local>/newEntry/Quantity}" type="Number" valueLiveUpdate="true"/>
-			        <Label text="Cost" required="true"/>
+			        <Label text="Material Cost" required="true"/>
 			        <Input value="{local>/newEntry/Cost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
 			        <Label text="Labor Cost" required="true"/>
 			        <Input value="{local>/newEntry/Laborcost}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>

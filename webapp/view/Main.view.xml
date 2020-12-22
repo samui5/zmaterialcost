@@ -57,16 +57,16 @@
 								<Text text="Cost Collector"/>
 							</Column>
 							<Column id="idPrice">
-								<Text text="Materials"/>
+								<Text text="Part Produced"/>
 							</Column>
 							<Column id="idEndDate">
 								<Text text="End Date"/>
 							</Column>
 							<Column id="idQuantity">
-								<Text text="Quantity"/>
+								<Text text="Quantity Produced"/>
 							</Column>
 							<Column id="idCost">
-								<Text text="Cost"/>
+								<Text text="Material Cost"/>
 							</Column>
 							<Column id="idLaborCost">
 								<Text text="Labor Cost"/>
