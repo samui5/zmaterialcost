@@ -57,6 +57,13 @@ sap.ui.define([
 			var final = parseFloat(calcVal / parseFloat(Zzqtyprods)).toFixed(2);
 			currentRow.getCells()[8].setText(final);
 		},
+		onPopupSearch: function(oEvent){
+			if(this.inpField.indexOf("Zzmatprod") !== -1){
+				this.cityPopup.getBinding("items").filter([new Filter("Key", "EQ","M-" + oEvent.getParameter("value"))]);
+			}else{
+				this.cityPopup.getBinding("items").filter([new Filter("Key", "EQ","L-" + oEvent.getParameter("value"))]);
+			}	
+		},
 		onCancel: function(){
 			var that = this;
 			MessageBox.confirm("All the changes will be discarded?", function(conf) {

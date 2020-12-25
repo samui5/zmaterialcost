@@ -476,11 +476,17 @@ CLASS ZCL_ZMM_DT_COST_COLL_DPC_EXT IMPLEMENTATION.
   METHOD valuehelpset_get_entityset.
 
     DATA ls_entity TYPE zcl_zmm_dt_cost_coll_mpc=>ts_valuehelp.
+    DATA lv_search TYPE string.
 
     READ TABLE it_filter_select_options INTO DATA(ls_filter) INDEX 1.
 
     READ TABLE ls_filter-select_options INTO DATA(ls_values) INDEX 1.
-
+    READ TABLE ls_filter-select_options INTO DATA(ls_values2) INDEX 2.
+    IF sy-subrc = 0.
+      lv_search = |%{ ls_values-low }%|.
+      REPLACE ALL OCCURRENCES OF 'L-' in lv_search WITH ''.
+      REPLACE ALL OCCURRENCES OF 'M-' in lv_search WITH ''.
+    ENDIF.
     SPLIT ls_values-low AT '-' INTO TABLE DATA(itab).
 
     DESCRIBE TABLE itab.
@@ -488,24 +494,33 @@ CLASS ZCL_ZMM_DT_COST_COLL_DPC_EXT IMPLEMENTATION.
     READ TABLE itab INTO DATA(ls_type) INDEX 1.
 
     IF ls_type CO 'M'.
-      SELECT DISTINCT Zzmatprod FROM zmm_am_cost_coll INTO TABLE @DATA(lt_mats).
+      IF lv_search is NOT INITIAL.
+        SELECT DISTINCT Zzmatprod FROM zmm_am_cost_coll INTO TABLE @DATA(lt_mats) where Zzmatprod like @lv_search.
+      else.
+        SELECT DISTINCT Zzmatprod FROM zmm_am_cost_coll INTO TABLE lt_mats.
+      ENDIF.
     ELSE.
-      SELECT DISTINCT Zzlocation FROM zmm_am_cost_coll INTO TABLE @DATA(lt_locs).
+      IF lv_search is NOT INITIAL.
+        SELECT DISTINCT Zzlocation FROM zmm_am_cost_coll INTO TABLE @DATA(lt_locs) where Zzlocation like @lv_search.
+      else.
+        SELECT DISTINCT Zzlocation FROM zmm_am_cost_coll INTO TABLE lt_locs.
+      endif.
+
     ENDIF.
 
     IF sy-tfill > 1.
-      READ TABLE itab INTO DATA(lv_lookup) INDEX 2.
-      lv_lookup =  '%' && lv_lookup && '%'.
       IF ls_type CO 'M'.
-        LOOP AT lt_mats INTO DATA(ls_mats) WHERE Zzmatprod CP lv_lookup.
+        LOOP AT lt_mats INTO DATA(ls_mats) .
           ls_entity = CORRESPONDING #( ls_mats MAPPING key = Zzmatprod text = Zzmatprod ).
+          APPEND ls_entity TO et_entityset.
         ENDLOOP.
       ELSE.
-        LOOP AT lt_locs INTO DATA(ls_locs) WHERE Zzlocation CP lv_lookup.
-          ls_entity = CORRESPONDING #( ls_mats MAPPING key = Zzmatprod text = Zzmatprod ).
+        LOOP AT lt_locs INTO DATA(ls_locs).
+          ls_entity = CORRESPONDING #( ls_locs MAPPING key = Zzlocation text = Zzlocation ).
+          APPEND ls_entity TO et_entityset.
         ENDLOOP.
       ENDIF.
-      APPEND ls_entity TO et_entityset.
+
     ELSE.
 
       IF ls_type CO 'M'.
