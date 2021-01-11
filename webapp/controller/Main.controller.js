@@ -288,6 +288,9 @@ sap.ui.define([
 			this.getView().getModel().create("/CollectorSet", payload,{
 				success: function(){
 					MessageToast.show("Data has been saved to SAP system");
+				},
+				error: function(oErr){
+					MessageBox.error(JSON.parse(oErr.responseText).error.message.value);
 				}
 			});
 		},

@@ -101,6 +101,13 @@ CLASS ZCL_ZMM_DT_COST_COLL_DPC_EXT IMPLEMENTATION.
     DELETE itab WHERE ZCURRENCY = 'D'.
 
     LOOP AT itab ASSIGNING FIELD-SYMBOL(<FS>).
+      select SINGLE 'X' INTO @data(lv_exist) from mara where matnr = @<fs>-ZZMATPROD.
+       IF sy-subrc <> 0.
+         raise EXCEPTION type /iwbep/cx_mgw_busi_exception
+           EXPORTING
+              message_unlimited      = |material code { <fs>-ZZMATPROD } in record { sy-tabix } is invalid|
+         .
+       ENDIF.
       <FS>-zcurrency = ''.
     ENDLOOP.
 
