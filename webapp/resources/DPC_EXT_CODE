@@ -100,13 +100,38 @@ CLASS ZCL_ZMM_DT_COST_COLL_DPC_EXT IMPLEMENTATION.
     ENDLOOP.
     DELETE itab WHERE ZCURRENCY = 'D'.
 
+    select ZZLOCATION, ZZWERKS INTO table @data(lt_locations) from ZSD_LOCATION.
+
+
     LOOP AT itab ASSIGNING FIELD-SYMBOL(<FS>).
+
+      "check if its valid material code - 01/14/2021
+      read TABLE lt_locations INTO data(ls_location) with KEY ZZLOCATION = <FS>-zzlocation.
+
+      IF sy-subrc <> 0.
+        raise EXCEPTION type /iwbep/cx_mgw_busi_exception
+                   EXPORTING
+                      message_unlimited      = |Location { <fs>-zzlocation } in record { sy-tabix } is invalid|
+                 .
+      ENDIF.
+
+      "check if its valid material code - 01/14/2021
       select SINGLE 'X' INTO @data(lv_exist) from mara where matnr = @<fs>-ZZMATPROD.
-       IF sy-subrc <> 0.
+       IF sy-subrc = 0.
+         "check if its valid material code and plant combination provided - 01/14/2021
+         select SINGLE 'X' INTO @lv_exist from marc where matnr = @<fs>-ZZMATPROD and werks = @ls_location-ZZWERKS.
+
+         IF sy-subrc <> 0.
+           raise EXCEPTION type /iwbep/cx_mgw_busi_exception
+             EXPORTING
+                message_unlimited      = |material code { <fs>-ZZMATPROD } for plant { ls_location-ZZWERKS } in record { sy-tabix } is invalid|
+           .
+         ENDIF.
+       else.
          raise EXCEPTION type /iwbep/cx_mgw_busi_exception
-           EXPORTING
-              message_unlimited      = |material code { <fs>-ZZMATPROD } in record { sy-tabix } is invalid|
-         .
+             EXPORTING
+                message_unlimited      = |material code { <fs>-ZZMATPROD } in record { sy-tabix } is invalid|
+           .
        ENDIF.
       <FS>-zcurrency = ''.
     ENDLOOP.
