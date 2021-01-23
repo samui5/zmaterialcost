@@ -8,14 +8,16 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"sap/ui/model/Filter",
 	"demo/app/matcost/model/formatter",
-	"demo/app/matcost/util/jszip"
-], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter) {
+	"demo/app/matcost/util/jszip",
+	'sap/m/MessageItem',
+	'sap/m/MessageView'
+], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView) {
 	"use strict";
 
 	return Controller.extend("demo.app.matcost.controller.Main", {
 		onInit: function(){
 				var oJson = new JSONModel();
-				oJson.setData({data: [],  newEntry: {
+				oJson.setData({data: [], title: 0,messages: [],  newEntry: {
 					Zzlocation:"",
 					Zzcostcol:"",
 					Zzmatprod:"",
@@ -81,6 +83,7 @@ sap.ui.define([
 					filters: [new Filter("Zzmatprod", "EQ", this.getView().byId("Zzmatprod").getValue())],
 					success: function(data){
 						that.localModel.setProperty("/data",data.results);
+						that.localModel.setProperty("/title",data.results.length);
 					}
 				});
 			}else if (this.getView().byId("Zzlocation").getValue() !== ""){
@@ -88,6 +91,7 @@ sap.ui.define([
 					filters: [new Filter("Zzlocation", "EQ", this.getView().byId("Zzlocation").getValue())],
 					success: function(data){
 						that.localModel.setProperty("/data",data.results);
+						that.localModel.setProperty("/title",data.results.length);
 					}
 				});
 			}else{
@@ -95,6 +99,7 @@ sap.ui.define([
 					success: function(data){
 						console.log(data.results);
 						that.localModel.setProperty("/data",data.results);
+						that.localModel.setProperty("/title",data.results.length);
 					}
 				});
 			}
@@ -184,6 +189,7 @@ sap.ui.define([
 				var aData = this.localModel.getProperty("/data");
 				aData.splice(0, 0, clonedData);
 				this.localModel.setProperty("/data", aData);
+				this.localModel.setProperty("/title",aData.length);
 			}
 			this._oDialogSecure.close();
 		},
@@ -285,9 +291,68 @@ sap.ui.define([
 			//var base64Str = Buffer.from(JSON.stringify(aData)).toString("base64");
 			var base64Str = btoa(decodeURIComponent(JSON.stringify(aData)));
 			var payload = {Key : "PST", Value : base64Str};
+			var that = this;
 			this.getView().getModel().create("/CollectorSet", payload,{
-				success: function(){
-					MessageToast.show("Data has been saved to SAP system");
+				success: function(data){
+					debugger;
+					if(data.Key === "E"){
+						var allErrors = JSON.parse(decodeURIComponent(atob(data.Value)));
+						var allMessages = [];
+						for (var i=0; i<allErrors.length; i++) {
+							
+							allMessages.push({
+												type: 'Error',
+												title: 'Error message',
+												description: allErrors[i],
+												counter: 1
+											});
+						}
+						var oMessageTemplate = new sap.m.MessageItem({
+							type: '{type}',
+							title: '{description}',
+							description: '{description}',
+							//subtitle: '{subtitle}',
+							counter: '{counter}',
+							
+						});
+						that.localModel.setProperty("/messages",allMessages);
+						
+						that.oMessageView = new sap.m.MessageView({
+															showDetailsPageHeader: true,
+															groupItems: false,
+															items: {
+																path: "/messages",
+																template: oMessageTemplate
+															}
+														});
+						that.oMessageView.setModel(that.localModel);
+						var that2 = that;
+						that.oDialog = new sap.m.Dialog({
+													resizable: true,
+													content: that.oMessageView,
+													state: 'Error',
+													title: "Errors",
+													beginButton: new sap.m.Button({
+														press: function (oEvent) {
+															oEvent.getSource().getParent().close();
+															that2.localModel.setProperty("/messages",[]);
+														},
+														text: "Close"
+													}),
+													customHeader: new sap.m.Bar({
+														titleAlignment: sap.m.TitleAlignment.Auto,
+														contentMiddle: [
+															new Text({ text: "Error"})
+														]
+													}),
+													contentHeight: "50%",
+													contentWidth: "50%",
+													verticalScrolling: false
+												});
+						that.oDialog.open();
+					}else{
+						MessageToast.show("Data has been saved to SAP system");	
+					}
 				},
 				error: function(oErr){
 					MessageBox.error(JSON.parse(oErr.responseText).error.message.value);

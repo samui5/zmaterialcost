@@ -42,7 +42,7 @@
 						items="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">
 						<headerToolbar>
 							<Toolbar>
-								<Title id="idTopTitle" text="Upload Data"/>
+								<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
 								<ToolbarSpacer/>
 								<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
 								<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>
