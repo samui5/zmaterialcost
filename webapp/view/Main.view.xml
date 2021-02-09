@@ -17,7 +17,7 @@
 				<content>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="CollectorSet" search="onFilterSearch">
 						<smartFilterBar:controlConfiguration>
-							<smartFilterBar:ControlConfiguration key="Zzmatprod" index="1" label="Part Produced" groupId="_BASIC" width="300px"
+							<smartFilterBar:ControlConfiguration key="Zzmatprod" index="1" label="Material or Description" groupId="_BASIC" width="300px"
 								visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
 									<Input id="Zzmatprod" showValueHelp="true" 
@@ -57,7 +57,7 @@
 								<Text text="Cost Collector"/>
 							</Column>
 							<Column id="idPrice">
-								<Text text="Part Produced"/>
+								<Text text="Material or Description"/>
 							</Column>
 							<Column id="idEndDate">
 								<Text text="End Date"/>
