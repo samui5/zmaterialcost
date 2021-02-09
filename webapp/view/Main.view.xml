@@ -4,17 +4,6 @@
 	<App>
 		<pages>
 			<Page title="{i18n>title}">
-				<!--<customHeader>-->
-				<!--	<Bar>-->
-				<!--		<contentMiddle>-->
-				<!--			<Label text="Read Data From Excel"/>-->
-				<!--		</contentMiddle>-->
-				<!--		<contentRight>-->
-				<!--			<u:FileUploader id="FileUploaderId" sameFilenameAllowed="true" iconOnly="false" buttonOnly="true" fileType="XLSX,xlsx"-->
-				<!--				icon="sap-icon://upload" iconFirst="true" style="Emphasized" change="onUpload"/>-->
-				<!--		</contentRight>-->
-				<!--	</Bar>-->
-				<!--</customHeader>-->
 				<content>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="CollectorSet" search="onFilterSearch">
 						<smartFilterBar:controlConfiguration>
@@ -37,8 +26,8 @@
 						</smartFilterBar:layoutData>
 					</smartFilterBar:SmartFilterBar>
 					<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="true"
-						useTablePersonalisation="true" header="Risk And Issue" showRowCount="true" persistencyKey="SmartTableRefApp_Explored"
-						enableAutoBinding="true" class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable">
+						useTablePersonalisation="true" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"
+						class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable">
 						<!--<smartTable:customToolbar>-->
 						<!--<OverflowToolbar design="Transparent">-->
 						<!--	<ToolbarSpacer/>-->
@@ -123,15 +112,16 @@
 						<!--</Table>-->
 						<t:Table rows="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">
 							<t:extension>
-								<OverflowToolbar>
-									<Toolbar>
-										<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
-										<ToolbarSpacer/>
-										<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-										<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>
-										<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>
-									</Toolbar>
-								</OverflowToolbar>
+							
+								<Toolbar>
+									<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
+									<ToolbarSpacer/>
+									<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
+									<Button icon="sap-icon://action-settings"></Button>
+									<Button icon="sap-icon://add" press="onAdd" text=""></Button>
+									<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text=""></Button>
+								</Toolbar>
+								<!--</OverflowToolbar>-->
 							</t:extension>
 							<t:columns>
 								<t:Column width="6rem">
