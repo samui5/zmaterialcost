@@ -128,7 +128,7 @@ sap.ui.define([
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/ValueHelpSet",
-					filters: [new Filter("Key", "EQ","M-")],
+					filters: [new Filter("Text", "EQ","M-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
 						value: "{Description}"
@@ -142,7 +142,7 @@ sap.ui.define([
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/ValueHelpSet",
-					filters: [new Filter("Key", "EQ","L-")],
+					filters: [new Filter("Text", "EQ","L-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
 						value: "{Text}"
