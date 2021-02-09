@@ -1,5 +1,5 @@
-sap.ui.define([],
-	function() {
+sap.ui.define(["sap/ui/core/format/NumberFormat"],
+	function(NumberFormat) {
 
 		return {
 
@@ -69,6 +69,13 @@ sap.ui.define([],
 			},
 			displaySAPDate: function(){
 				
+			},
+			getCurrencyFormat: function(cost){
+				var oCurrencyFormat = NumberFormat.getCurrencyInstance({
+					currencyCode: false
+				});
+
+				return oCurrencyFormat.format(cost, "USD");
 			},
 			statusIcon: function(num) {
 				var state = {

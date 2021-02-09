@@ -90,13 +90,14 @@
 									<Text text="{local>Zzmatprod}"></Text>
 									<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}"></Text>
 									<Text text="{local>Zzqtyprods}"></Text>
-									<Text text="{local>Zzmatcosts}"></Text>
-									<Text text="{local>Zzlabcosts}"></Text>
-									<Text text="{local>Zzmchcosts}"></Text>
-									<Text text="{local>Zzunitcosts}"></Text>
+									<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>
+									<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>
+									<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>
+									<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>
 									<HBox>
 										<Button icon="sap-icon://edit" press="onEdit"></Button>
 										<Button class="sapUiTinyMarginBegin" icon="sap-icon://delete" press="onDelete"></Button>
+										<Button class="sapUiTinyMarginBegin" icon="sap-icon://copy" press="onCopy"></Button>
 									</HBox>
 								</cells>
 							</ColumnListItem>

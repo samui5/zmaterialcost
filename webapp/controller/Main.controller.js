@@ -131,7 +131,7 @@ sap.ui.define([
 					filters: [new Filter("Key", "EQ","M-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
-						value: "{Text}"
+						value: "{Description}"
 					})
 				});
 				this.cityPopup.setTitle("Materials");
@@ -193,6 +193,36 @@ sap.ui.define([
 			}
 			this._oDialogSecure.close();
 		},
+		onPressHandleSecureCopyPopup: function(oEvent){
+			debugger;
+			// var copyData=this.localModel.getProperty("/newEntry");
+			// var data=this.localModel.getProperty("/data");
+			// data.push(copyData);
+			// this.localModel.setProperty("/data",[]);
+			// this.localModel.setProperty("/data",data);
+			// this.getView().byId("idTable").getBinding("items").refresh();
+			
+			
+			var sValues = this.localModel.getProperty("/newEntry");
+			if(sValues.Zzmatcosts === 0 || sValues.Zzmatcosts === "" || sValues.Zzmatprod === "" || sValues.Zzcostcol === "" || sValues.Zzlocation === ""){
+				MessageBox.error("Please enter valid value");
+				return;
+			}
+			var clonedData = JSON.parse(JSON.stringify(sValues));
+			clonedData.Zzenddate =  new Date(clonedData.Zzenddate);
+			// if(this.editPath){
+			// 	clonedData.Zcurrency = "U";
+			// 	this.localModel.setProperty(this.editPath, clonedData);
+			// 	this.editPath = "";
+			// }else
+			{
+				var aData = this.localModel.getProperty("/data");
+				aData.splice(0, 0, clonedData);
+				this.localModel.setProperty("/data", aData);
+				this.localModel.setProperty("/title",aData.length);
+			}
+			this._oDialogSecure1.close();
+		},
 		onEdit: function(oEvent){
 			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
@@ -206,10 +236,51 @@ sap.ui.define([
 		},
 		onDelete: function(oEvent){
 			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
-			var record = this.localModel.getProperty(this.editPath);
-			record.Zcurrency = "D";
-			this.localModel.setProperty(this.editPath, record);
-			this.getView().byId("idTable").getBinding("items").filter([new sap.ui.model.Filter("Zcurrency", "NE", "D")]);
+			var that=this;
+			 MessageBox.warning("Do you want to delete the record?",{
+				icon: MessageBox.Icon.INFORMATION,
+				actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+				onClose: function(oAction){
+					if (oAction === "YES"){
+						var record = that.localModel.getProperty(that.editPath);
+						record.Zcurrency = "D";
+						that.localModel.setProperty(that.editPath, record);
+						that.getView().byId("idTable").getBinding("items").filter([new sap.ui.model.Filter("Zcurrency", "NE", "D")]);
+					}
+					else{
+						MessageToast.show("Deletion Cancelled");
+					}
+				}
+			});
+		},
+		onCopy: function(oEvent){
+			debugger;
+			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
+			var item = this.localModel.getProperty(this.editPath);
+			var newEntry = {
+					Zzlocation:item.Zzlocation,
+					Zzcostcol:item.Zzcostcol,
+					Zzmatprod:item.Zzmatprod,
+					Zzenddate: new Date(item.Zzenddate),
+					Zzqtyprods:item.Zzqtyprods,
+					Zzmatcosts:item.Zzmatcosts,
+					Zzlabcosts:item.Zzlabcosts,
+					Zzmchcosts:item.Zzmchcosts,
+					Zzunitcosts:item.Zzunitcosts,
+					Zcurrency: item.Zcurrency
+				};
+			this.localModel.setProperty("/newEntry", newEntry);
+			if (!this._oDialogSecure1) {
+				this._oDialogSecure1 = sap.ui.xmlfragment("Secure_Dialog1", "demo.app.matcost.fragments.copyEntry", this);
+				this.getView().addDependent(this._oDialogSecure1);
+			}
+			
+			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
+			this._oDialogSecure1.open();
+			
+		},
+		onPressHandleSecureCancelCopyPopup: function(){
+			this._oDialogSecure1.close();
 		},
 		onPressHandleSecureCancelPopup: function(){
 			this._oDialogSecure.close();
