@@ -156,7 +156,7 @@ sap.ui.define([
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/MaterialSet",
-					filters: [new Filter("Text", "EQ","M-")],
+					// filters: [new Filter("Text", "EQ","M-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
 						value: "{Description}"
@@ -170,7 +170,7 @@ sap.ui.define([
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/LocationSet",
-					filters: [new Filter("Text", "EQ","L-")],
+					// filters: [new Filter("Text", "EQ","L-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
 						value: "{Text}"
@@ -184,7 +184,7 @@ sap.ui.define([
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
 					path: "/CostcollectorSet",
-					filters: [new Filter("Text", "EQ","L-")],
+					// filters: [new Filter("Text", "EQ","L-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
 						value: "{Text}"
