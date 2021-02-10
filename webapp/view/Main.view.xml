@@ -132,19 +132,19 @@
 								<!--</OverflowToolbar>-->
 							</t:extension>
 							<t:columns>
-								<t:Column width="6rem">
+								<t:Column width="9rem">
 									<Label text="Location"/>
 									<t:template>
 										<Text text="{local>Zzlocation}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="6rem">
+								<t:Column width="9rem">
 									<Label text="Cost Collector"/>
 									<t:template>
 										<Text text="{local>Zzcostcol}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="9rem">
+								<t:Column width="13rem">
 									<Label text="Material or Description"/>
 									<t:template>
 										<Text text="{local>Zzmatprod}" wrapping="false"/>
@@ -156,13 +156,13 @@
 										<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem">
+								<t:Column width="10rem">
 									<Label text="Quantity Produced"/>
 									<t:template>
 										<Text text="{local>Zzqtyprods}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem" hAlign="Right">
+								<t:Column width="9rem" hAlign="Right">
 									<Label text="Material Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
@@ -174,19 +174,19 @@
 										<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="7rem" hAlign="Right">
+								<t:Column width="8rem" hAlign="Right">
 									<Label text="Machine Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="7rem" hAlign="Right">
+								<t:Column width="8rem" hAlign="Right">
 									<Label text="Unit Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="10rem">
+								<t:Column width="11rem">
 									<Label text="Options"/>
 									<t:template>
 										<HBox>
