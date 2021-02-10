@@ -94,6 +94,22 @@ sap.ui.define([
 						that.localModel.setProperty("/title",data.results.length);
 					}
 				});
+			}else if(this.getView().byId("Zzcostcol").getValue() !== ""){
+				this.oDataModel.read("/MatCollAllSet",{
+					filters: [new Filter("Zzcostcol", "EQ", this.getView().byId("Zzcostcol").getValue())],
+					success: function(data){
+						that.localModel.setProperty("/data",data.results);
+						that.localModel.setProperty("/title",data.results.length);
+					}
+				});
+			}else if(this.getView().byId("Zzenddate").getValue() !== ""){
+				this.oDataModel.read("/MatCollAllSet",{
+					filters: [new Filter("Zzenddate", "EQ", this.getView().byId("Zzenddate").getValue())],
+					success: function(data){
+						that.localModel.setProperty("/data",data.results);
+						that.localModel.setProperty("/title",data.results.length);
+					}
+				});
 			}else{
 				this.oDataModel.read("/MatCollAllSet",{
 					success: function(data){
@@ -113,8 +129,20 @@ sap.ui.define([
 				var that = this;
 				if(this.inpField.indexOf("Zzmatprod") !== -1){
 					this.getView().byId("Zzlocation").setValue("");
+					this.getView().byId("Zzcostcol").setValue("");
+					this.getView().byId("Zzenddate").setValue("");
+				}else if(this.inpField.indexOf("Zzlocation") !== -1){
+					this.getView().byId("Zzmatprod").setValue("");
+					this.getView().byId("Zzcostcol").setValue("");
+					this.getView().byId("Zzenddate").setValue("");
+				}else if(this.inpField.indexOf("Zzcostcol") !== -1){
+					this.getView().byId("Zzlocation").setValue("");
+					this.getView().byId("Zzmatprod").setValue("");
+					this.getView().byId("Zzenddate").setValue("");
 				}else{
 					this.getView().byId("Zzmatprod").setValue("");
+					this.getView().byId("Zzlocation").setValue("");
+					this.getView().byId("Zzcostcol").setValue("");
 				}
 				
 				
@@ -127,7 +155,7 @@ sap.ui.define([
 			if(this.inpField.indexOf("Zzmatprod") !== -1){
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
-					path: "/ValueHelpSet",
+					path: "/MaterialSet",
 					filters: [new Filter("Text", "EQ","M-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
@@ -138,10 +166,10 @@ sap.ui.define([
 				this.cityPopup.setMultiSelect(false);
 				this.getView().addDependent(this.cityPopup);
 				this.cityPopup.open();
-			}else{
+			}else if(this.inpField.indexOf("Zzlocation") !== -1){
 				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
 				this.cityPopup.bindAggregation("items",{
-					path: "/ValueHelpSet",
+					path: "/LocationSet",
 					filters: [new Filter("Text", "EQ","L-")],
 					template: new sap.m.DisplayListItem({
 						label: "{Key}",
@@ -152,8 +180,35 @@ sap.ui.define([
 				this.cityPopup.setMultiSelect(false);
 				this.getView().addDependent(this.cityPopup);
 				this.cityPopup.open();
+			}else if(this.inpField.indexOf("Zzcostcol") !== -1){
+				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
+				this.cityPopup.bindAggregation("items",{
+					path: "/CostcollectorSet",
+					filters: [new Filter("Text", "EQ","L-")],
+					template: new sap.m.DisplayListItem({
+						label: "{Key}",
+						value: "{Text}"
+					})
+				});
+				this.cityPopup.setTitle("Cost Collector");
+				this.cityPopup.setMultiSelect(false);
+				this.getView().addDependent(this.cityPopup);
+				this.cityPopup.open();
+			}else{
+				this.cityPopup = sap.ui.xmlfragment("demo.app.matcost.fragments.popup", this);	
+				this.cityPopup.bindAggregation("items",{
+					path: "/MatCollAllSet",
+					filters: [new Filter("Zzenddate", "EQ","L-")],
+					template: new sap.m.DisplayListItem({
+						label: "{Zzenddate}",
+						value: "{Zzenddate}"
+					})
+				});
+				this.cityPopup.setTitle("End Date");
+				this.cityPopup.setMultiSelect(false);
+				this.getView().addDependent(this.cityPopup);
+				this.cityPopup.open();
 			}
-			
 		},
 		getFormattedDate: function(monthInc) {
 			var dateObj = new Date();
