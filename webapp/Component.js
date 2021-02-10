@@ -8,10 +8,10 @@ sap.ui.define([
 	return UIComponent.extend("demo.app.matcost.Component", {
 
 		metadata: {
-			manifest: "json",
-			config: {
-				fullWidth: true
-			}
+			manifest: "json"
+			// config: {
+			// 	fullWidth: true
+			// }
 		},
 
 		/**

@@ -20,20 +20,21 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
 		<script>
-			sap.ui.getCore().attachInit(function() {
-				new sap.m.Shell({
-					app: new sap.ui.core.ComponentContainer({
-						height : "100%",
-						name : "demo.app.matcost"
-					})
-				}).placeAt("content");
-			});
+			// sap.ui.getCore().attachInit(function() {
+			// 	new sap.m.Shell({
+			// 		app: new sap.ui.core.ComponentContainer({
+			// 			height : "100%",
+			// 			// width:100%,
+			// 			name : "demo.app.matcost"
+			// 		})
+			// 	}).placeAt("content");
+			// });
 			// sap.ui.getCore().attachInit(function() {
 			// 	new sap.m.App ({
 			// 		pages: [
 			// 			new sap.m.Page({
 			// 				// title: "Hello",
-			// 				enableScrolling : false,
+			// 				// enableScrolling : true,
 			// 				content: [ new sap.ui.core.ComponentContainer({
 			// 					height : "100%", name : "demo.app.matcost"
 			// 				})]
@@ -41,6 +42,12 @@
 			// 		]
 			// 	}).placeAt("content");
 			// });	
+			
+			var oCompContainer = new sap.ui.core.ComponentContainer({
+				name: "demo.app.matcost"
+			});
+			
+			oCompContainer.placeAt("content");
 		</script>
 	</head>
 
