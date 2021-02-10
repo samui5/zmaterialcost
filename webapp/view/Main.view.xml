@@ -116,7 +116,7 @@
 									<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
 									<ToolbarSpacer/>
 									<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-									<!--<Button icon="sap-icon://add" press="onAdd" text=""></Button>-->
+									<Button icon="sap-icon://add" press="onAdd" text=""></Button>
 									<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text=""></Button>
 								</Toolbar>
 								<!--</OverflowToolbar>-->
