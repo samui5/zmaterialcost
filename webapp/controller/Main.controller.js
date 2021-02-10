@@ -224,7 +224,7 @@ sap.ui.define([
 			this._oDialogSecure1.close();
 		},
 		onEdit: function(oEvent){
-			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
+			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
 			this.localModel.setProperty("/newEntry", this.localModel.getProperty(this.editPath));
 			if (!this._oDialogSecure) {
@@ -235,7 +235,7 @@ sap.ui.define([
 			this._oDialogSecure.open();
 		},
 		onDelete: function(oEvent){
-			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
+			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			var that=this;
 			 MessageBox.warning("Do you want to delete the record?",{
 				icon: MessageBox.Icon.INFORMATION,
@@ -245,7 +245,7 @@ sap.ui.define([
 						var record = that.localModel.getProperty(that.editPath);
 						record.Zcurrency = "D";
 						that.localModel.setProperty(that.editPath, record);
-						that.getView().byId("idTable").getBinding("items").filter([new sap.ui.model.Filter("Zcurrency", "NE", "D")]);
+						that.getView().byId("idTable").getBinding("rows").filter([new sap.ui.model.Filter("Zcurrency", "NE", "D")]);
 					}
 					else{
 						MessageToast.show("Deletion Cancelled");
@@ -255,7 +255,7 @@ sap.ui.define([
 		},
 		onCopy: function(oEvent){
 			debugger;
-			this.editPath = oEvent.getSource().getParent().getParent().getBindingContextPath();
+			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			var item = this.localModel.getProperty(this.editPath);
 			var newEntry = {
 					Zzlocation:item.Zzlocation,

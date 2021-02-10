@@ -110,13 +110,12 @@
 						<!-- </ColumnListItem>-->
 						<!-- </items>-->
 						<!--</Table>-->
-						<t:Table rows="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">
+						<t:Table id="idTable" rows="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">
 							<t:extension>
 								<Toolbar>
 									<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
 									<ToolbarSpacer/>
 									<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-								
 									<Button icon="sap-icon://add" press="onAdd" text=""></Button>
 									<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text=""></Button>
 								</Toolbar>
@@ -153,25 +152,25 @@
 										<Text text="{local>Zzqtyprods}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem">
+								<t:Column width="8rem" hAlign="Right">
 									<Label text="Material Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem">
+								<t:Column width="8rem" hAlign="Right">
 									<Label text="Labor Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="7rem">
+								<t:Column width="7rem" hAlign="Right">
 									<Label text="Machine Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="7rem">
+								<t:Column width="7rem" hAlign="Right">
 									<Label text="Unit Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>

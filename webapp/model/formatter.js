@@ -12,13 +12,15 @@ sap.ui.define(["sap/ui/core/format/NumberFormat"],
 				};
 				return num === "" ? text["0"] : text[num];
 			},
-			convertPDFToUrl: function(vContent){
-				var decodedPdfContent = atob(vContent.replace("data:application/pdf;base64,",""));
+			convertPDFToUrl: function(vContent) {
+				var decodedPdfContent = atob(vContent.replace("data:application/pdf;base64,", ""));
 				var byteArray = new Uint8Array(decodedPdfContent.length);
-				for(var i=0; i<decodedPdfContent.length; i++){
-				    byteArray[i] = decodedPdfContent.charCodeAt(i);
+				for (var i = 0; i < decodedPdfContent.length; i++) {
+					byteArray[i] = decodedPdfContent.charCodeAt(i);
 				}
-				var blob = new Blob([byteArray.buffer], { type: 'application/pdf' });
+				var blob = new Blob([byteArray.buffer], {
+					type: 'application/pdf'
+				});
 				jQuery.sap.addUrlWhitelist("blob");
 				return URL.createObjectURL(blob);
 			},
@@ -45,11 +47,11 @@ sap.ui.define(["sap/ui/core/format/NumberFormat"],
 				if (mm < 10) {
 					mm = '0' + mm;
 				}
-				return  mm + '/' + dd + '/' + yyyy;
+				return mm + '/' + dd + '/' + yyyy;
 			},
 			getSAPFormattedDate: function(newDate) {
-				
-				if(newDate){
+
+				if (newDate) {
 					//var dateObj = newDate;
 					var dateObj = new Date(newDate);
 					dateObj.setDate(dateObj.getDate());
@@ -63,19 +65,19 @@ sap.ui.define(["sap/ui/core/format/NumberFormat"],
 					if (mm < 10) {
 						mm = '0' + mm;
 					}
-					return  mm + '/' + dd + '/' + yyyy;
+					return mm + '/' + dd + '/' + yyyy;
 				}
-				
+
 			},
-			displaySAPDate: function(){
-				
+			displaySAPDate: function() {
+
 			},
-			getCurrencyFormat: function(cost){
+			getCurrencyFormat: function(cost) {
 				var oCurrencyFormat = NumberFormat.getCurrencyInstance({
 					currencyCode: false
 				});
-
-				return oCurrencyFormat.format(cost, "USD");
+				var Cost = oCurrencyFormat.format(cost, "USD");
+				return (Cost.slice("", 1).concat(" ", Cost.split("$")[1]));
 			},
 			statusIcon: function(num) {
 				var state = {
@@ -103,23 +105,23 @@ sap.ui.define(["sap/ui/core/format/NumberFormat"],
 					return true;
 				}
 			},
-			attachBtnText : function(attachment){
-				if(attachment){
-					return attachment.length > 0 ? "Attached" : "Attach";	
-				}else{
+			attachBtnText: function(attachment) {
+				if (attachment) {
+					return attachment.length > 0 ? "Attached" : "Attach";
+				} else {
 					return "Attach";
 				}
-				
+
 			},
-			attachBtnType : function(attachment){
-				if(attachment){
+			attachBtnType: function(attachment) {
+				if (attachment) {
 					return attachment.length > 0 ? "Accept" : "Reject";
-				}else{
+				} else {
 					return "Reject";
 				}
-				
+
 			}
-			
+
 		};
 	}
 );
