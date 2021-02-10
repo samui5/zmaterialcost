@@ -113,7 +113,7 @@ sap.ui.define([
 			}else{
 				this.oDataModel.read("/MatCollAllSet",{
 					success: function(data){
-						console.log(data.results);
+						// console.log(data.results);
 						that.localModel.setProperty("/data",data.results);
 						that.localModel.setProperty("/title",data.results.length);
 					}
