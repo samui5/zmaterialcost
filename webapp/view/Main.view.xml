@@ -4,17 +4,6 @@
 	<App>
 		<pages>
 			<Page title="{i18n>title}">
-				<!--<customHeader>-->
-				<!--	<Bar>-->
-				<!--		<contentMiddle>-->
-				<!--			<Label text="Read Data From Excel"/>-->
-				<!--		</contentMiddle>-->
-				<!--		<contentRight>-->
-				<!--			<u:FileUploader id="FileUploaderId" sameFilenameAllowed="true" iconOnly="false" buttonOnly="true" fileType="XLSX,xlsx"-->
-				<!--				icon="sap-icon://upload" iconFirst="true" style="Emphasized" change="onUpload"/>-->
-				<!--		</contentRight>-->
-				<!--	</Bar>-->
-				<!--</customHeader>-->
 				<content>
 					<smartFilterBar:SmartFilterBar id="smartFilterBar" entitySet="CollectorSet" search="onFilterSearch">
 						<smartFilterBar:controlConfiguration>
@@ -37,101 +26,101 @@
 						</smartFilterBar:layoutData>
 					</smartFilterBar:SmartFilterBar>
 					<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="true"
-						useTablePersonalisation="true" header="Risk And Issue" showRowCount="true" persistencyKey="SmartTableRefApp_Explored"
-						enableAutoBinding="true" class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable">
+						useTablePersonalisation="true" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"
+						class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable">
 						<!--<smartTable:customToolbar>-->
 						<!--<OverflowToolbar design="Transparent">-->
-						<!--	<ToolbarSpacer/>-->
-						<!--	<Button text="Create" press="onRiskIssue"></Button>-->
+						<!-- <ToolbarSpacer/>-->
+						<!-- <Button text="Create" press="onRiskIssue"></Button>-->
 						<!--</OverflowToolbar>-->
-						<!--			<OverflowToolbar>-->
-						<!--		<Toolbar>-->
-						<!--			<Title id="idTopTitle" text="Upload Data ({local>/title})"/>-->
-						<!--			<ToolbarSpacer/>-->
+						<!-- <OverflowToolbar>-->
+						<!-- <Toolbar>-->
+						<!-- <Title id="idTopTitle" text="Upload Data ({local>/title})"/>-->
+						<!-- <ToolbarSpacer/>-->
 						<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-						<!--			<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>-->
-						<!--			<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>-->
-						<!--		</Toolbar>-->
-						<!--	</OverflowToolbar>-->
+						<!-- <Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>-->
+						<!-- <Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>-->
+						<!-- </Toolbar>-->
+						<!-- </OverflowToolbar>-->
 						<!--</smartTable:customToolbar>-->
 						<!--<smartTable:SmartTable smartFilterId="smartFilterBar" tableType="ResponsiveTable" useExportToExcel="true" beforeExport="onBeforeExport"-->
-						<!--	useVariantManagement="false" useTablePersonalisation="true" header="Line Items" showRowCount="true"-->
-						<!--	persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" demandPopin="true" class="sapUiResponsiveContentPadding">-->
+						<!-- useVariantManagement="false" useTablePersonalisation="true" header="Line Items" showRowCount="true"-->
+						<!-- persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" demandPopin="true" class="sapUiResponsiveContentPadding">-->
 						<!--<Table id="idTable" width="auto" class="sapUiResponsiveMargin" noDataText="{worklistView>/tableNoDataText}"-->
-						<!--	items="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">-->
-						<!--	<headerToolbar>-->
-						<!--		<Toolbar>-->
-						<!--			<Title id="idTopTitle" text="Upload Data ({local>/title})"/>-->
-						<!--			<ToolbarSpacer/>-->
+						<!-- items="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">-->
+						<!-- <headerToolbar>-->
+						<!-- <Toolbar>-->
+						<!-- <Title id="idTopTitle" text="Upload Data ({local>/title})"/>-->
+						<!-- <ToolbarSpacer/>-->
 						<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-						<!--			<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>-->
-						<!--			<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>-->
-						<!--		</Toolbar>-->
-						<!--	</headerToolbar>-->
-						<!--	<columns>-->
-						<!--		<Column id="idTopName">-->
-						<!--			<Text text="Location"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idBrand">-->
-						<!--			<Text text="Cost Collector"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idPrice">-->
-						<!--			<Text text="Material or Description"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idEndDate">-->
-						<!--			<Text text="End Date"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idQuantity">-->
-						<!--			<Text text="Quantity Produced"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idCost">-->
-						<!--			<Text text="Material Cost"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idLaborCost">-->
-						<!--			<Text text="Labor Cost"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idEmissionCost">-->
-						<!--			<Text text="Machine Cost"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idAvgCost">-->
-						<!--			<Text text="Unit Cost"/>-->
-						<!--		</Column>-->
-						<!--		<Column id="idbtns">-->
-						<!--			<Text text="Options"/>-->
-						<!--		</Column>-->
-						<!--	</columns>-->
-						<!--	<items>-->
-						<!--		<ColumnListItem>-->
-						<!--			<cells>-->
-						<!--				<Text text="{local>Zzlocation}"></Text>-->
-						<!--				<Text text="{local>Zzcostcol}"></Text>-->
-						<!--				<Text text="{local>Zzmatprod}"></Text>-->
-						<!--				<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}"></Text>-->
-						<!--				<Text text="{local>Zzqtyprods}"></Text>-->
-						<!--				<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
-						<!--				<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
-						<!--				<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
-						<!--				<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
-						<!--				<HBox>-->
-						<!--					<Button icon="sap-icon://edit" press="onEdit"></Button>-->
-						<!--					<Button class="sapUiTinyMarginBegin" icon="sap-icon://delete" press="onDelete"></Button>-->
-						<!--					<Button class="sapUiTinyMarginBegin" icon="sap-icon://copy" press="onCopy"></Button>-->
-						<!--				</HBox>-->
-						<!--			</cells>-->
-						<!--		</ColumnListItem>-->
-						<!--	</items>-->
+						<!-- <Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>-->
+						<!-- <Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>-->
+						<!-- </Toolbar>-->
+						<!-- </headerToolbar>-->
+						<!-- <columns>-->
+						<!-- <Column id="idTopName">-->
+						<!-- <Text text="Location"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idBrand">-->
+						<!-- <Text text="Cost Collector"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idPrice">-->
+						<!-- <Text text="Material or Description"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idEndDate">-->
+						<!-- <Text text="End Date"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idQuantity">-->
+						<!-- <Text text="Quantity Produced"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idCost">-->
+						<!-- <Text text="Material Cost"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idLaborCost">-->
+						<!-- <Text text="Labor Cost"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idEmissionCost">-->
+						<!-- <Text text="Machine Cost"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idAvgCost">-->
+						<!-- <Text text="Unit Cost"/>-->
+						<!-- </Column>-->
+						<!-- <Column id="idbtns">-->
+						<!-- <Text text="Options"/>-->
+						<!-- </Column>-->
+						<!-- </columns>-->
+						<!-- <items>-->
+						<!-- <ColumnListItem>-->
+						<!-- <cells>-->
+						<!-- <Text text="{local>Zzlocation}"></Text>-->
+						<!-- <Text text="{local>Zzcostcol}"></Text>-->
+						<!-- <Text text="{local>Zzmatprod}"></Text>-->
+						<!-- <Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}"></Text>-->
+						<!-- <Text text="{local>Zzqtyprods}"></Text>-->
+						<!-- <Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
+						<!-- <Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
+						<!-- <Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
+						<!-- <Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}"></Text>-->
+						<!-- <HBox>-->
+						<!-- <Button icon="sap-icon://edit" press="onEdit"></Button>-->
+						<!-- <Button class="sapUiTinyMarginBegin" icon="sap-icon://delete" press="onDelete"></Button>-->
+						<!-- <Button class="sapUiTinyMarginBegin" icon="sap-icon://copy" press="onCopy"></Button>-->
+						<!-- </HBox>-->
+						<!-- </cells>-->
+						<!-- </ColumnListItem>-->
+						<!-- </items>-->
 						<!--</Table>-->
 						<t:Table rows="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}">
 							<t:extension>
-								<OverflowToolbar>
-									<Toolbar>
-										<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
-										<ToolbarSpacer/>
-										<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-										<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>
-										<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>
-									</Toolbar>
-								</OverflowToolbar>
+								<Toolbar>
+									<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
+									<ToolbarSpacer/>
+									<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
+								
+									<Button icon="sap-icon://add" press="onAdd" text=""></Button>
+									<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text=""></Button>
+								</Toolbar>
+								<!--</OverflowToolbar>-->
 							</t:extension>
 							<t:columns>
 								<t:Column width="6rem">
