@@ -12,7 +12,8 @@ sap.ui.define([
 	'sap/m/MessageItem',
 	'sap/m/MessageView',
 	"sap/ui/table/RowSettings"
-], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView,RowSettings) {
+], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView,
+	RowSettings) {
 	"use strict";
 
 	return Controller.extend("demo.app.matcost.controller.Main", {
@@ -43,12 +44,13 @@ sap.ui.define([
 		updateRecords: [],
 		newRecords: [],
 		deleteRecords: [],
-		onLiveChange: function(){
-			var sValues = 	this.localModel.getProperty("/newEntry");
-			if(sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods){
+		onLiveChange: function() {
+			var sValues = this.localModel.getProperty("/newEntry");
+			if (sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods) {
 				return;
 			}
-			sValues.Zzunitcosts = ( parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts) ) / parseFloat(sValues.Zzqtyprods);
+			sValues.Zzunitcosts = (parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts)) /
+				parseFloat(sValues.Zzqtyprods);
 			var newVal = parseFloat(sValues.Zzunitcosts).toFixed(2);
 			this.localModel.setProperty("/newEntry/Zzunitcosts", newVal);
 		},
@@ -177,7 +179,7 @@ sap.ui.define([
 				}]
 			};
 			this.localModel.setProperty("/Setting", data);
-			if(!this.oPopupSetting){
+			if (!this.oPopupSetting) {
 				this.oPopupSetting = new sap.ui.xmlfragment("idsettingPopup", "demo.app.matcost.fragments.settingPopup", this);
 				this.oPopupSetting.setTitle("Setting");
 				this.oPopupSetting.setMultiSelect(true);
@@ -189,9 +191,9 @@ sap.ui.define([
 						label: "{local>text}"
 					})
 				});
-				this.getView().addDependent(this.oPopupSetting);	
+				this.getView().addDependent(this.oPopupSetting);
 			}
-			
+
 			this.oPopupSetting.open();
 
 		},
@@ -208,8 +210,18 @@ sap.ui.define([
 			for (i = 0; i < items.length; i++) {
 				aItems.push(this.localModel.getProperty(items[i]).text);
 			}
-			for (var i = 0; i < aItems.length; i++) {
-				this.getView().byId(aItems[i]).setVisible(false);
+			var oItems = this.localModel.getProperty("/Setting/data");
+			for (i = 0; i < oItems.length; i++) {
+				for (var j = 0; j < aItems.length; j++) {
+					if (oItems[i].text === aItems[j]) {
+						this.getView().byId(oItems[i].text).setVisible(true);
+						break;
+					}
+					else{
+							this.getView().byId(oItems[i].text).setVisible(false);
+					}
+				}
+
 			}
 			debugger;
 		},
@@ -384,10 +396,10 @@ sap.ui.define([
 		onEdit: function(oEvent) {
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
-			 var sValues=this.localModel.getProperty(this.editPath);
-			 var CloneData= JSON.parse(JSON.stringify(sValues));
-			 CloneData.Zzenddate = new Date(CloneData.Zzenddate);
-			this.localModel.setProperty("/newEntry",CloneData );
+			var sValues = this.localModel.getProperty(this.editPath);
+			var CloneData = JSON.parse(JSON.stringify(sValues));
+			CloneData.Zzenddate = new Date(CloneData.Zzenddate);
+			this.localModel.setProperty("/newEntry", CloneData);
 			if (!this.oDialogSecure) {
 				this.oDialogSecure = sap.ui.xmlfragment("idEdit", "demo.app.matcost.fragments.createEntry", this);
 				this.getView().addDependent(this.oDialogSecure);
@@ -443,11 +455,11 @@ sap.ui.define([
 			this._oDialogSecure1.close();
 		},
 		onPressHandleSecureCancelPopup: function() {
-			if(this.flag === 0){
+			if (this.flag === 0) {
 				this.oDialogSecure.close();
 				this.flag = 1;
-			}else{
-			this._oDialogSecure.close();
+			} else {
+				this._oDialogSecure.close();
 			}
 		},
 
@@ -556,7 +568,7 @@ sap.ui.define([
 
 						});
 						that.localModel.setProperty("/messages", allMessages);
-debugger;
+						debugger;
 						that.oMessageView = new sap.m.MessageView({
 							showDetailsPageHeader: true,
 							groupItems: false,
@@ -569,14 +581,17 @@ debugger;
 						var that2 = that;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
-							buttons: [ new sap.m.Button({text:"Download"}) ,
-										new sap.m.Button({
-											press: function(oEvent) {
-												oEvent.getSource().getParent().close();
-												that2.localModel.setProperty("/messages", []);
-											},
-											text: "Close"
-										})],
+							buttons: [new sap.m.Button({
+									text: "Download"
+								}),
+								new sap.m.Button({
+									press: function(oEvent) {
+										oEvent.getSource().getParent().close();
+										that2.localModel.setProperty("/messages", []);
+									},
+									text: "Close"
+								})
+							],
 							content: that.oMessageView,
 							state: 'Error',
 							title: "Errors",
