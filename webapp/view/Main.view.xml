@@ -40,7 +40,7 @@
 							<smartFilterBar:ControlConfiguration key="Zzenddate" index="4" label="End Date" groupId="_BASIC" width="300px" visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
 									<!--<DataPicker id="Zzenddate" ></DataPicker>-->
-									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM DD YYYY"/>
+									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM/dd/yyyy"/>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
 							<smartFilterBar:ControlConfiguration key="Validated" filterType="single"/>
