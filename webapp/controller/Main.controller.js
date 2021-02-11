@@ -37,15 +37,15 @@ sap.ui.define([
 		updateRecords : [],
 		newRecords: [],
 		deleteRecords: [],
-		onLiveChange: function(){
-			var sValues = 	this.localModel.getProperty("/newEntry");
-			if(sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods){
-				return;
-			}
-			sValues.Zzunitcosts = ( parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts) ) / parseFloat(sValues.Zzqtyprods);
-			var newVal = parseFloat(sValues.Zzunitcosts).toFixed(2);
-			this.localModel.setProperty("/newEntry/Zzunitcosts", newVal);
-		},
+		// onLiveChange: function(){
+		// 	var sValues = 	this.localModel.getProperty("/newEntry");
+		// 	if(sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods){
+		// 		return;
+		// 	}
+		// 	sValues.Zzunitcosts = ( parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts) ) / parseFloat(sValues.Zzqtyprods);
+		// 	var newVal = parseFloat(sValues.Zzunitcosts).toFixed(2);
+		// 	this.localModel.setProperty("/newEntry/Zzunitcosts", newVal);
+		// },
 		onCellChange: function(oEvent){
 			var currentRow = oEvent.getSource().getParent();
 			var Zzqtyprods = currentRow.getCells()[4].getValue();
@@ -228,36 +228,63 @@ sap.ui.define([
 		onUpload: function (e) {
 			this._import(e.getParameter("files") && e.getParameter("files")[0]);
 		},
-		onPressHandleSecureOkPopup: function(){
+		dateSeperator: function(oDate){
+			oDate = String(oDate);
+			var n = oDate.split(" ");
+			var i = "";
+			oDate = i.concat(n[1]," ",n[2]," ",n[3]);
+			
+			return oDate;
+		},
+		dupValidator: function(material, location, collector, endDate){
+			 var data = this.localModel.getProperty("/data");
+			 endDate = this.dateSeperator(endDate);
+			 for(var i=0; i<data.length; i++){
+				var dataEndDate = this.dateSeperator(data[i].Zzenddate);
+			 	if(data[i].Zzmatprod===material && data[i].Zzlocation===location && data[i].Zzcostcol===collector && dataEndDate===endDate){
+						debugger;
+						return false;
+					}
+			 }
+			 return true;
+		},
+		onPressHandleSecureOkPopup: function(oEvent){debugger;
 			var sValues = this.localModel.getProperty("/newEntry");
 			if(sValues.Zzmatcosts === 0 || sValues.Zzmatcosts === "" || sValues.Zzmatprod === "" || sValues.Zzcostcol === "" || sValues.Zzlocation === ""){
 				MessageBox.error("Please enter valid value");
 				return;
 			}
+			var sId = oEvent.getSource().getId();
 			var clonedData = JSON.parse(JSON.stringify(sValues));
 			clonedData.Zzenddate =  new Date(clonedData.Zzenddate);
-			if(this.editPath){
-				clonedData.Zcurrency = "U";
-				this.localModel.setProperty(this.editPath, clonedData);
-				this.editPath = "";
+			if(sId === "idEdit--idButton"){
+				// this.editPath
+				var valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
+				if(valid===false){
+					MessageToast.show("Data Updated");
+				}
+				else{
+					clonedData.Zcurrency = "U";
+					this.localModel.setProperty(this.editPath, clonedData);
+					this.editPath = "";
+				}
 			}else{
 				var aData = this.localModel.getProperty("/data");
-				aData.splice(0, 0, clonedData);
-				this.localModel.setProperty("/data", aData);
-				this.localModel.setProperty("/title",aData.length);
+				valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
+				debugger;
+				if(valid===false){
+						MessageToast.show("Duplicate Data Cannot be added");
+				}
+				else{
+					aData.splice(0, 0, clonedData);
+					this.localModel.setProperty("/data", aData);
+					this.localModel.setProperty("/title",aData.length);
+				}
+				
 			}
 			this._oDialogSecure.close();
 		},
 		onPressHandleSecureCopyPopup: function(oEvent){
-			debugger;
-			// var copyData=this.localModel.getProperty("/newEntry");
-			// var data=this.localModel.getProperty("/data");
-			// data.push(copyData);
-			// this.localModel.setProperty("/data",[]);
-			// this.localModel.setProperty("/data",data);
-			// this.getView().byId("idTable").getBinding("items").refresh();
-			
-			
 			var sValues = this.localModel.getProperty("/newEntry");
 			if(sValues.Zzmatcosts === 0 || sValues.Zzmatcosts === "" || sValues.Zzmatprod === "" || sValues.Zzcostcol === "" || sValues.Zzlocation === ""){
 				MessageBox.error("Please enter valid value");
@@ -265,13 +292,19 @@ sap.ui.define([
 			}
 			var clonedData = JSON.parse(JSON.stringify(sValues));
 			clonedData.Zzenddate =  new Date(clonedData.Zzenddate);
+
 			// if(this.editPath){
 			// 	clonedData.Zcurrency = "U";
 			// 	this.localModel.setProperty(this.editPath, clonedData);
 			// 	this.editPath = "";
 			// }else
-			{
-				var aData = this.localModel.getProperty("/data");
+			
+			var aData = this.localModel.getProperty("/data");
+			var valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
+			if(valid===false){
+					MessageToast.show("Duplicate Data Cannot be added");
+			}
+			else{
 				aData.splice(0, 0, clonedData);
 				this.localModel.setProperty("/data", aData);
 				this.localModel.setProperty("/title",aData.length);
@@ -282,12 +315,12 @@ sap.ui.define([
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
 			this.localModel.setProperty("/newEntry", this.localModel.getProperty(this.editPath));
-			if (!this._oDialogSecure) {
-				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.matcost.fragments.createEntry", this);
-				this.getView().addDependent(this._oDialogSecure);
+			if (!this.oDialogSecure) {
+				this.oDialogSecure = sap.ui.xmlfragment("idEdit", "demo.app.matcost.fragments.createEntry", this);
+				this.getView().addDependent(this.oDialogSecure);
 			}
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
-			this._oDialogSecure.open();
+			this.oDialogSecure.open();
 		},
 		onDelete: function(oEvent){
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
@@ -309,7 +342,6 @@ sap.ui.define([
 			});
 		},
 		onCopy: function(oEvent){
-			debugger;
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			var item = this.localModel.getProperty(this.editPath);
 			var newEntry = {
@@ -326,10 +358,9 @@ sap.ui.define([
 				};
 			this.localModel.setProperty("/newEntry", newEntry);
 			if (!this._oDialogSecure1) {
-				this._oDialogSecure1 = sap.ui.xmlfragment("Secure_Dialog1", "demo.app.matcost.fragments.copyEntry", this);
+				this._oDialogSecure1 = sap.ui.xmlfragment("idCopy", "demo.app.matcost.fragments.copyEntry", this);
 				this.getView().addDependent(this._oDialogSecure1);
 			}
-			
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
 			this._oDialogSecure1.open();
 			
@@ -339,6 +370,7 @@ sap.ui.define([
 		},
 		onPressHandleSecureCancelPopup: function(){
 			this._oDialogSecure.close();
+			this.oDialogSecure.close();
 		},
 		
 		onAddExcelData: function() {
@@ -388,7 +420,7 @@ sap.ui.define([
 		_oDialogSecure: null,
 		onAdd: function(oEvent){
 			if (!this._oDialogSecure) {
-				this._oDialogSecure = sap.ui.xmlfragment("Secure_Dialog", "demo.app.matcost.fragments.createEntry", this);
+				this._oDialogSecure = sap.ui.xmlfragment("idAddPopup", "demo.app.matcost.fragments.createEntry", this);
 				this.getView().addDependent(this._oDialogSecure);
 			}
 			var newEntry = {
@@ -403,6 +435,7 @@ sap.ui.define([
 					Zzunitcosts:0,
 					Zcurrency: ""
 				};
+				debugger;
 			this.localModel.setProperty("/newEntry", newEntry);
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
 			this._oDialogSecure.open();

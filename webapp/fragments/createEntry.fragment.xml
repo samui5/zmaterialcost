@@ -5,22 +5,22 @@
 				labelSpanL="3" labelSpanM="3" layout="ResponsiveGridLayout" maxContainerCols="2">
 				<f:content>
 					<Label text="Location" required="true"/>
-			        <Input value="{local>/newEntry/Zzlocation}" valueLiveUpdate="true"/>
+			        <Input value="{local>/newEntry/Zzlocation}" valueLiveUpdate="false"/>
 					<Label text="Collector" required="true"/>
-			        <Input value="{local>/newEntry/Zzcostcol}" valueLiveUpdate="true"/>
+			        <Input value="{local>/newEntry/Zzcostcol}" valueLiveUpdate="false"/>
 			        <Label text="Part Produced" required="true"/>
-			        <Input value="{local>/newEntry/Zzmatprod}" valueLiveUpdate="true"/>
+			        <Input value="{local>/newEntry/Zzmatprod}" valueLiveUpdate="false"/>
 			        <Label text="EndDate" required="true"/>
 			        <DatePicker id="inqDate" 
                 				displayFormat="MM/dd/yyyy" dateValue="{local>/newEntry/Zzenddate}" ></DatePicker>
 			        <Label text="Quantity Produced" required="true"/>
-			        <Input value="{local>/newEntry/Zzqtyprods}" type="Number" valueLiveUpdate="true"/>
+			        <Input value="{local>/newEntry/Zzqtyprods}" type="Number" valueLiveUpdate="false"/>
 			        <Label text="Material Cost" required="true"/>
-			        <Input value="{local>/newEntry/Zzmatcosts}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Input value="{local>/newEntry/Zzmatcosts}" type="Number" valueLiveUpdate="false" change="onLiveChange"/>
 			        <Label text="Labor Cost" required="true"/>
-			        <Input value="{local>/newEntry/Zzlabcosts}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Input value="{local>/newEntry/Zzlabcosts}" type="Number" valueLiveUpdate="false" change="onLiveChange"/>
 			        <Label text="Machine Cost" required="true"/>
-			        <Input value="{local>/newEntry/Zzmchcosts}" type="Number" valueLiveUpdate="true" liveChange="onLiveChange"/>
+			        <Input value="{local>/newEntry/Zzmchcosts}" type="Number" valueLiveUpdate="false" change="onLiveChange"/>
 			        <Label text="Unit Cost" required="true"/>
 			        <Text text="{local>/newEntry/Zzunitcosts}"/>
 				</f:content>
