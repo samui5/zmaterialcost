@@ -40,7 +40,7 @@
 							<smartFilterBar:ControlConfiguration key="Zzenddate" index="4" label="End Date" groupId="_BASIC" width="300px" visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
 									<!--<DataPicker id="Zzenddate" ></DataPicker>-->
-									<DatePicker id="Zzenddate" change="handleChange" />
+									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM DD YYYY"/>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
 							<smartFilterBar:ControlConfiguration key="Validated" filterType="single"/>
@@ -158,7 +158,7 @@
 										<Text text="{local>Zzlocation}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="CostCollector" width="9rem">
+								<t:Column id="CostCollector" width="9rem" sortProperty="Zzcostcol" >
 									<t:customData>
 										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","columnIndex":"2"}'/>
 									</t:customData>
@@ -167,43 +167,43 @@
 										<Text text="{local>Zzcostcol}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="MaterialorDescription" width="13rem">
+								<t:Column id="MaterialorDescription" width="13rem" sortProperty="Zzmatprod">
 									<Label text="Material or Description"/>
 									<t:template>
 										<Text text="{local>Zzmatprod}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="EndDate" width="8rem">
+								<t:Column id="EndDate" width="8rem" sortProperty="Zzenddate">
 									<Label text="End Date"/>
 									<t:template>
 										<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="QuantityProduced" width="10rem" hAlign="Right">
+								<t:Column id="QuantityProduced" width="10rem" hAlign="Right" sortProperty="Zzqtyprods">
 									<Label text="Quantity Produced"/>
 									<t:template>
 										<Text text="{local>Zzqtyprods}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="MaterialCost" width="9rem" hAlign="Right">
+								<t:Column id="MaterialCost" width="9rem" hAlign="Right" sortProperty="Zzmatcosts">
 									<Label text="Material Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="LaborCost" width="8rem" hAlign="Right">
+								<t:Column id="LaborCost" width="8rem" hAlign="Right" sortProperty="Zzlabcosts">
 									<Label text="Labor Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="MachineCost" width="8rem" hAlign="Right">
+								<t:Column id="MachineCost" width="8rem" hAlign="Right" sortProperty="Zzmchcosts">
 									<Label text="Machine Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="UnitCost" width="8rem" hAlign="Right">
+								<t:Column id="UnitCost" width="8rem" hAlign="Right" sortProperty="Zzunitcosts">
 									<Label text="Unit Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
