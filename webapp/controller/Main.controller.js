@@ -313,14 +313,12 @@ sap.ui.define([
 				var dataEndDate = this.dateSeperator(data[i].Zzenddate);
 				if (data[i].Zzmatprod === material && data[i].Zzlocation === location && data[i].Zzcostcol === collector && dataEndDate ===
 					endDate) {
-					debugger;
 					return false;
 				}
 			}
 			return true;
 		},
 		onPressHandleSecureOkPopup: function(oEvent) {
-			debugger;
 			var sValues = this.localModel.getProperty("/newEntry");
 			if (sValues.Zzmatcosts === 0 || sValues.Zzmatcosts === "" || sValues.Zzmatprod === "" || sValues.Zzcostcol === "" || sValues.Zzlocation ===
 				"") {
@@ -339,17 +337,18 @@ sap.ui.define([
 					clonedData.Zcurrency = "U";
 					this.localModel.setProperty(this.editPath, clonedData);
 					this.editPath = "";
+					this.oDialogSecure.close();
 				}
 			} else {
 				var aData = this.localModel.getProperty("/data");
 				valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
-				debugger;
 				if (valid === false) {
 					MessageToast.show("Duplicate Data Cannot be added");
 				} else {
 					aData.splice(0, 0, clonedData);
 					this.localModel.setProperty("/data", aData);
 					this.localModel.setProperty("/title", aData.length);
+					this._oDialogSecure.close();
 				}
 
 			}
@@ -385,14 +384,18 @@ sap.ui.define([
 		onEdit: function(oEvent) {
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
-			this.localModel.setProperty("/newEntry", this.localModel.getProperty(this.editPath));
-			if (!this._oDialogSecure) {
-				this._oDialogSecure = sap.ui.xmlfragment("idEdit", "demo.app.matcost.fragments.createEntry", this);
-				this.getView().addDependent(this._oDialogSecure);
+			 var sValues=this.localModel.getProperty(this.editPath);
+			 var CloneData= JSON.parse(JSON.stringify(sValues));
+			 CloneData.Zzenddate = new Date(CloneData.Zzenddate);
+			this.localModel.setProperty("/newEntry",CloneData );
+			if (!this.oDialogSecure) {
+				this.oDialogSecure = sap.ui.xmlfragment("idEdit", "demo.app.matcost.fragments.createEntry", this);
+				this.getView().addDependent(this.oDialogSecure);
 			}
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
-			this._oDialogSecure.setTitle("Edit Record");
-			this._oDialogSecure.open();
+			this.oDialogSecure.setTitle("Edit Record");
+			this.flag = 0;
+			this.oDialogSecure.open();
 		},
 		onDelete: function(oEvent) {
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
@@ -440,8 +443,12 @@ sap.ui.define([
 			this._oDialogSecure1.close();
 		},
 		onPressHandleSecureCancelPopup: function() {
+			if(this.flag === 0){
+				this.oDialogSecure.close();
+				this.flag = 1;
+			}else{
 			this._oDialogSecure.close();
-			
+			}
 		},
 
 		onAddExcelData: function() {
@@ -506,7 +513,6 @@ sap.ui.define([
 				Zzunitcosts: 0,
 				Zcurrency: ""
 			};
-			debugger;
 			this.localModel.setProperty("/newEntry", newEntry);
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
 			this._oDialogSecure.setTitle("Add New Material");
