@@ -11,9 +11,10 @@ sap.ui.define([
 	"demo/app/matcost/util/jszip",
 	'sap/m/MessageItem',
 	'sap/m/MessageView',
-	"sap/ui/table/RowSettings"
+	"sap/ui/table/RowSettings",
+	"sap/ui/model/FilterOperator"
 ], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView,
-	RowSettings) {
+	RowSettings,FilterOperator) {
 	"use strict";
 
 	return Controller.extend("demo.app.matcost.controller.Main", {
@@ -216,9 +217,8 @@ sap.ui.define([
 					if (oItems[i].text === aItems[j]) {
 						this.getView().byId(oItems[i].text).setVisible(true);
 						break;
-					}
-					else{
-							this.getView().byId(oItems[i].text).setVisible(false);
+					} else {
+						this.getView().byId(oItems[i].text).setVisible(false);
 					}
 				}
 
@@ -427,6 +427,24 @@ sap.ui.define([
 				}
 			});
 		},
+
+		onPopupSearch1: function(oEvent) {
+			debugger;
+			var toBeSearched = oEvent.getParameter("value");
+			// var nameOfPopup = oEvent.getParameter("itemsBinding").getPath();
+			// if (nameOfPopup.indexOf("cities") !== -1) {
+			if(toBeSearched===""){
+				this.oPopupSetting.getBinding("items").filter([]);
+			}
+			else{
+				var oFilter = new Filter("text", sap.ui.model.FilterOperator.Contains, toBeSearched);
+				this.oPopupSetting.getBinding("items").filter([oFilter]);
+			// } else {
+			// 	oFilter = new Filter("name", FilterOperator.Contains, toBeSearched);
+			// 	this.suppPopup.getBinding("items").filter([oFilter]);
+			}
+		},
+
 		onCopy: function(oEvent) {
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			var item = this.localModel.getProperty(this.editPath);
