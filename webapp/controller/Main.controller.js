@@ -386,12 +386,13 @@ sap.ui.define([
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
 			this.localModel.setProperty(this.editPath + "/Zzenddate", new Date(this.localModel.getProperty(this.editPath).Zzenddate));
 			this.localModel.setProperty("/newEntry", this.localModel.getProperty(this.editPath));
-			if (!this.oDialogSecure) {
-				this.oDialogSecure = sap.ui.xmlfragment("idEdit", "demo.app.matcost.fragments.createEntry", this);
-				this.getView().addDependent(this.oDialogSecure);
+			if (!this._oDialogSecure) {
+				this._oDialogSecure = sap.ui.xmlfragment("idEdit", "demo.app.matcost.fragments.createEntry", this);
+				this.getView().addDependent(this._oDialogSecure);
 			}
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
-			this.oDialogSecure.open();
+			this._oDialogSecure.setTitle("Edit Record");
+			this._oDialogSecure.open();
 		},
 		onDelete: function(oEvent) {
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
@@ -440,7 +441,7 @@ sap.ui.define([
 		},
 		onPressHandleSecureCancelPopup: function() {
 			this._oDialogSecure.close();
-			this.oDialogSecure.close();
+			
 		},
 
 		onAddExcelData: function() {
@@ -508,6 +509,7 @@ sap.ui.define([
 			debugger;
 			this.localModel.setProperty("/newEntry", newEntry);
 			//jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialogSecure);
+			this._oDialogSecure.setTitle("Add New Material");
 			this._oDialogSecure.open();
 		},
 		onSave: function() {
