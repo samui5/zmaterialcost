@@ -429,19 +429,14 @@ sap.ui.define([
 		},
 
 		onPopupSearch1: function(oEvent) {
-			debugger;
 			var toBeSearched = oEvent.getParameter("value");
-			// var nameOfPopup = oEvent.getParameter("itemsBinding").getPath();
-			// if (nameOfPopup.indexOf("cities") !== -1) {
+		
 			if(toBeSearched===""){
 				this.oPopupSetting.getBinding("items").filter([]);
 			}
 			else{
 				var oFilter = new Filter("text", sap.ui.model.FilterOperator.Contains, toBeSearched);
 				this.oPopupSetting.getBinding("items").filter([oFilter]);
-			// } else {
-			// 	oFilter = new Filter("name", FilterOperator.Contains, toBeSearched);
-			// 	this.suppPopup.getBinding("items").filter([oFilter]);
 			}
 		},
 
