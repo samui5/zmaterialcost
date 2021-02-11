@@ -12,9 +12,11 @@ sap.ui.define([
 	'sap/m/MessageItem',
 	'sap/m/MessageView',
 	"sap/ui/table/RowSettings",
-	"sap/ui/model/FilterOperator"
+	"sap/ui/model/FilterOperator",
+	'sap/ui/core/util/Export',
+	'sap/ui/core/util/ExportTypeCSV'
 ], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView,
-	RowSettings,FilterOperator) {
+	RowSettings, FilterOperator, Export, ExportTypeCSV) {
 	"use strict";
 
 	return Controller.extend("demo.app.matcost.controller.Main", {
@@ -221,7 +223,6 @@ sap.ui.define([
 						this.getView().byId(oItems[i].text).setVisible(false);
 					}
 				}
-
 			}
 			debugger;
 		},
@@ -430,11 +431,10 @@ sap.ui.define([
 
 		onPopupSearch1: function(oEvent) {
 			var toBeSearched = oEvent.getParameter("value");
-		
-			if(toBeSearched===""){
+
+			if (toBeSearched === "") {
 				this.oPopupSetting.getBinding("items").filter([]);
-			}
-			else{
+			} else {
 				var oFilter = new Filter("text", sap.ui.model.FilterOperator.Contains, toBeSearched);
 				this.oPopupSetting.getBinding("items").filter([oFilter]);
 			}
@@ -581,7 +581,8 @@ sap.ui.define([
 
 						});
 						that.localModel.setProperty("/messages", allMessages);
-						debugger;
+						that.allMessages = allMessages;
+
 						that.oMessageView = new sap.m.MessageView({
 							showDetailsPageHeader: true,
 							groupItems: false,
@@ -592,10 +593,47 @@ sap.ui.define([
 						});
 						that.oMessageView.setModel(that.localModel);
 						var that2 = that;
+						debugger;
+						// that.rowHighlight(allMessages);
+						// debugger;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
 							buttons: [new sap.m.Button({
-									text: "Download"
+									text: "Download",
+									press: function(oEvent) {
+										var oExport = new sap.ui.core.util.Export({
+
+											// Type that will be used to generate the content. Own ExportType's can be created to support other formats
+											exportType: new sap.ui.core.util.ExportTypeCSV({
+												separatorChar: ",",
+												charset:"urf-8"
+											}),
+
+											// Pass in the model created above
+											models: that2.localModel,
+
+											// binding information for the rows aggregation
+											rows: {
+												path: "/messages"
+											},
+
+											// column definitions with column name and binding info for the content
+
+											columns: [{
+												name: "Error",
+												template: {
+													content: "{description}"
+												}
+											}]
+										});
+
+										// download exported file
+										oExport.saveFile().catch(function(oError) {
+											MessageBox.error("Error when downloading data. Browser might not be supported!\n\n" + oError);
+										}).then(function() {
+											oExport.destroy();
+										});
+									}
 								}),
 								new sap.m.Button({
 									press: function(oEvent) {
@@ -621,6 +659,12 @@ sap.ui.define([
 					MessageBox.error(JSON.parse(oErr.responseText).error.message.value);
 				}
 			});
+		},
+		rowHighlight: function(omsg) {
+			debugger;
+			this.getView().byId("idTable").setRowSettingsTemplate(new RowSettings({
+				highlight: "{Location}"
+			}));
 		},
 		_import: function(file) {
 			var that = this;
