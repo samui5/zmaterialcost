@@ -43,15 +43,15 @@ sap.ui.define([
 		updateRecords: [],
 		newRecords: [],
 		deleteRecords: [],
-		// onLiveChange: function(){
-		// 	var sValues = 	this.localModel.getProperty("/newEntry");
-		// 	if(sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods){
-		// 		return;
-		// 	}
-		// 	sValues.Zzunitcosts = ( parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts) ) / parseFloat(sValues.Zzqtyprods);
-		// 	var newVal = parseFloat(sValues.Zzunitcosts).toFixed(2);
-		// 	this.localModel.setProperty("/newEntry/Zzunitcosts", newVal);
-		// },
+		onLiveChange: function(){
+			var sValues = 	this.localModel.getProperty("/newEntry");
+			if(sValues.Zzqtyprods <= 0 || !sValues.Zzqtyprods){
+				return;
+			}
+			sValues.Zzunitcosts = ( parseFloat(sValues.Zzmatcosts) + parseFloat(sValues.Zzlabcosts) + parseFloat(sValues.Zzmchcosts) ) / parseFloat(sValues.Zzqtyprods);
+			var newVal = parseFloat(sValues.Zzunitcosts).toFixed(2);
+			this.localModel.setProperty("/newEntry/Zzunitcosts", newVal);
+		},
 		onCellChange: function(oEvent) {
 			var currentRow = oEvent.getSource().getParent();
 			var Zzqtyprods = currentRow.getCells()[4].getValue();
