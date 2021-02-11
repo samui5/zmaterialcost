@@ -177,7 +177,7 @@
 										<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="10rem">
+								<t:Column width="10rem" hAlign="Right">
 									<Label text="Quantity Produced"/>
 									<t:template>
 										<Text text="{local>Zzqtyprods}" wrapping="false"/>
