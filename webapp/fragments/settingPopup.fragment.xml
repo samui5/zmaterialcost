@@ -1,0 +1,4 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<SelectDialog multiSelect="true" selected="true" confirm="onSettingOk">
+	</SelectDialog>
+</core:FragmentDefinition>

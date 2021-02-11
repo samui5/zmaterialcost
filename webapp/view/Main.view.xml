@@ -148,7 +148,7 @@
 								<!--</OverflowToolbar>-->
 							</t:extension>
 							<t:columns>
-								<t:Column width="9rem" sortProperty="Zzlocation">
+								<t:Column id="Location" width="9rem" sortProperty="Zzlocation">
 									<t:customData>
 										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlocation","columnIndex":"1"}'/>
 									</t:customData>
@@ -157,7 +157,7 @@
 										<Text text="{local>Zzlocation}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="9rem">
+								<t:Column id="CostCollector" width="9rem">
 									<t:customData>
 										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","columnIndex":"2"}'/>
 									</t:customData>
@@ -166,49 +166,49 @@
 										<Text text="{local>Zzcostcol}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="13rem">
+								<t:Column id="MaterialorDescription" width="13rem">
 									<Label text="Material or Description"/>
 									<t:template>
 										<Text text="{local>Zzmatprod}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem">
+								<t:Column id="EndDate" width="8rem">
 									<Label text="End Date"/>
 									<t:template>
 										<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="10rem" hAlign="Right">
+								<t:Column id="QuantityProduced" width="10rem" hAlign="Right">
 									<Label text="Quantity Produced"/>
 									<t:template>
 										<Text text="{local>Zzqtyprods}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="9rem" hAlign="Right">
+								<t:Column id="MaterialCost" width="9rem" hAlign="Right">
 									<Label text="Material Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem" hAlign="Right">
+								<t:Column id="LaborCost" width="8rem" hAlign="Right">
 									<Label text="Labor Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem" hAlign="Right">
+								<t:Column id="MachineCost" width="8rem" hAlign="Right">
 									<Label text="Machine Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="8rem" hAlign="Right">
+								<t:Column id="UnitCost" width="8rem" hAlign="Right">
 									<Label text="Unit Cost"/>
 									<t:template>
 										<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column width="11rem">
+								<t:Column id="Options" width="11rem">
 									<Label text="Options"/>
 									<t:template>
 										<HBox>
