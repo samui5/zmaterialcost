@@ -10,8 +10,9 @@ sap.ui.define([
 	"demo/app/matcost/model/formatter",
 	"demo/app/matcost/util/jszip",
 	'sap/m/MessageItem',
-	'sap/m/MessageView'
-], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView) {
+	'sap/m/MessageView',
+	"sap/ui/table/RowSettings"
+], function(Controller, JSONModel, History, Dialog, FileUploader, MessageToast, MessageBox, Filter, formatter, MessageItem, MessageView,RowSettings) {
 	"use strict";
 
 	return Controller.extend("demo.app.matcost.controller.Main", {
@@ -545,7 +546,7 @@ sap.ui.define([
 
 						});
 						that.localModel.setProperty("/messages", allMessages);
-
+debugger;
 						that.oMessageView = new sap.m.MessageView({
 							showDetailsPageHeader: true,
 							groupItems: false,
@@ -558,6 +559,7 @@ sap.ui.define([
 						var that2 = that;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
+							DButton:new sap.m.Button({text:"Download"}),
 							content: that.oMessageView,
 							state: 'Error',
 							title: "Errors",
