@@ -27,7 +27,7 @@
 			</f:SimpleForm>
 		</content>
 		<buttons>
-			<Button text="Create" press="onPressHandleSecureOkPopup"/>
+			<Button id="idButton" text="Create" press="onPressHandleSecureOkPopup"/>
 			<Button text="Cancel" press="onPressHandleSecureCancelPopup"/>
 		</buttons>
 	</Dialog>	
