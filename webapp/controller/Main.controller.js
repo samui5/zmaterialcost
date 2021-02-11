@@ -177,19 +177,21 @@ sap.ui.define([
 				}]
 			};
 			this.localModel.setProperty("/Setting", data);
-
-			this.oPopupSetting = new sap.ui.xmlfragment("idsettingPopup", "demo.app.matcost.fragments.settingPopup", this);
-			this.oPopupSetting.setTitle("Setting");
-			this.oPopupSetting.setMultiSelect(true);
-			// this.oPopupSetting.setSelected(true);
-			this.oPopupSetting.bindAggregation("items", {
-				path: 'local>/Setting/data',
-				template: new sap.m.ObjectListItem({
-					// intro: "{local>city}",
-					title: "{local>text}"
-				})
-			});
-			this.getView().addDependent(this.oPopupSetting);
+			if(!this.oPopupSetting){
+				this.oPopupSetting = new sap.ui.xmlfragment("idsettingPopup", "demo.app.matcost.fragments.settingPopup", this);
+				this.oPopupSetting.setTitle("Setting");
+				this.oPopupSetting.setMultiSelect(true);
+				// this.oPopupSetting.setSelected(true);
+				this.oPopupSetting.bindAggregation("items", {
+					path: 'local>/Setting/data',
+					template: new sap.m.DisplayListItem({
+						// intro: "{local>city}",
+						label: "{local>text}"
+					})
+				});
+				this.getView().addDependent(this.oPopupSetting);	
+			}
+			
 			this.oPopupSetting.open();
 
 		},
