@@ -13,6 +13,7 @@
 									<Input id="Zzmatprod" showValueHelp="true" valueHelpRequest="onValueHelp" showSuggestion="true" suggestionItems="{/MaterialSet}">
 										<suggestionItems>
 											<core:Item text="{Text}"/>
+											<core:Item text="{Description}"/>
 										</suggestionItems>
 									</Input>
 								</smartFilterBar:customControl>
