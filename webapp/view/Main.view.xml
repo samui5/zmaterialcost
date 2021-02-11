@@ -49,10 +49,10 @@
 							<FlexItemData shrinkFactor="0"/>
 						</smartFilterBar:layoutData>
 					</smartFilterBar:SmartFilterBar>
-					<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="false"
-						useTablePersonalisation="false" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"
-						class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable"
-						entitySet="local>/data"  >
+					<!--<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="false"-->
+					<!--	useTablePersonalisation="false" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"-->
+					<!--	class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable"-->
+					<!--	entitySet="local>/data"  >-->
 						<!--<smartTable:customToolbar>-->
 						<!--<OverflowToolbar design="Transparent">-->
 						<!-- <ToolbarSpacer/>-->
@@ -140,9 +140,10 @@
 								<Toolbar>
 									<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
 									<ToolbarSpacer/>
-									<!--<SearchField width="30%" search="onSearch" placeholder="enter location"></SearchField>-->
-									<Button icon="sap-icon://add" press="onAdd" text=""></Button>
-									<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text=""></Button>
+									<!--<SearchField width="30%" search="onSearch" placeholder="enter location" sap-icon://settings></SearchField>-->
+									<Button icon="sap-icon://settings" press="onSetting" text="Setting"></Button>
+									<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>
+									<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>
 								</Toolbar>
 								<!--</OverflowToolbar>-->
 							</t:extension>
@@ -219,7 +220,7 @@
 								</t:Column>
 							</t:columns>
 						</t:Table>
-					</smartTable:SmartTable>
+					<!--</smartTable:SmartTable>-->
 				</content>
 				<footer>
 					<Toolbar>
