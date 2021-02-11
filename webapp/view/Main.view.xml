@@ -49,9 +49,10 @@
 							<FlexItemData shrinkFactor="0"/>
 						</smartFilterBar:layoutData>
 					</smartFilterBar:SmartFilterBar>
-					<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="true"
-						useTablePersonalisation="true" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"
-						class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable">
+					<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="false"
+						useTablePersonalisation="false" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"
+						class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable"
+						entitySet="local>/data"  >
 						<!--<smartTable:customToolbar>-->
 						<!--<OverflowToolbar design="Transparent">-->
 						<!-- <ToolbarSpacer/>-->
@@ -146,13 +147,19 @@
 								<!--</OverflowToolbar>-->
 							</t:extension>
 							<t:columns>
-								<t:Column width="9rem">
+								<t:Column width="9rem" sortProperty="Zzlocation">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlocation","columnIndex":"1"}'/>
+									</t:customData>
 									<Label text="Location"/>
 									<t:template>
 										<Text text="{local>Zzlocation}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column width="9rem">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","columnIndex":"2"}'/>
+									</t:customData>
 									<Label text="Cost Collector"/>
 									<t:template>
 										<Text text="{local>Zzcostcol}" wrapping="false"/>
