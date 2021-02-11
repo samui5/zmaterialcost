@@ -177,19 +177,21 @@ sap.ui.define([
 				}]
 			};
 			this.localModel.setProperty("/Setting", data);
-
-			this.oPopupSetting = new sap.ui.xmlfragment("idsettingPopup", "demo.app.matcost.fragments.settingPopup", this);
-			this.oPopupSetting.setTitle("Setting");
-			this.oPopupSetting.setMultiSelect(true);
-			// this.oPopupSetting.setSelected(true);
-			this.oPopupSetting.bindAggregation("items", {
-				path: 'local>/Setting/data',
-				template: new sap.m.ObjectListItem({
-					// intro: "{local>city}",
-					title: "{local>text}"
-				})
-			});
-			this.getView().addDependent(this.oPopupSetting);
+			if(!this.oPopupSetting){
+				this.oPopupSetting = new sap.ui.xmlfragment("idsettingPopup", "demo.app.matcost.fragments.settingPopup", this);
+				this.oPopupSetting.setTitle("Setting");
+				this.oPopupSetting.setMultiSelect(true);
+				// this.oPopupSetting.setSelected(true);
+				this.oPopupSetting.bindAggregation("items", {
+					path: 'local>/Setting/data',
+					template: new sap.m.DisplayListItem({
+						// intro: "{local>city}",
+						label: "{local>text}"
+					})
+				});
+				this.getView().addDependent(this.oPopupSetting);	
+			}
+			
 			this.oPopupSetting.open();
 
 		},
@@ -559,25 +561,17 @@ debugger;
 						var that2 = that;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
-							DButton:new sap.m.Button({text:"Download"}),
+							buttons: [ new sap.m.Button({text:"Download"}) ,
+										new sap.m.Button({
+											press: function(oEvent) {
+												oEvent.getSource().getParent().close();
+												that2.localModel.setProperty("/messages", []);
+											},
+											text: "Close"
+										})],
 							content: that.oMessageView,
 							state: 'Error',
 							title: "Errors",
-							beginButton: new sap.m.Button({
-								press: function(oEvent) {
-									oEvent.getSource().getParent().close();
-									that2.localModel.setProperty("/messages", []);
-								},
-								text: "Close"
-							}),
-							customHeader: new sap.m.Bar({
-								titleAlignment: sap.m.TitleAlignment.Auto,
-								contentMiddle: [
-									new Text({
-										text: "Error"
-									})
-								]
-							}),
 							contentHeight: "50%",
 							contentWidth: "50%",
 							verticalScrolling: false
