@@ -561,25 +561,17 @@ debugger;
 						var that2 = that;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
-							DButton:new sap.m.Button({text:"Download"}),
+							buttons: [ new sap.m.Button({text:"Download"}) ,
+										new sap.m.Button({
+											press: function(oEvent) {
+												oEvent.getSource().getParent().close();
+												that2.localModel.setProperty("/messages", []);
+											},
+											text: "Close"
+										})],
 							content: that.oMessageView,
 							state: 'Error',
 							title: "Errors",
-							beginButton: new sap.m.Button({
-								press: function(oEvent) {
-									oEvent.getSource().getParent().close();
-									that2.localModel.setProperty("/messages", []);
-								},
-								text: "Close"
-							}),
-							customHeader: new sap.m.Bar({
-								titleAlignment: sap.m.TitleAlignment.Auto,
-								contentMiddle: [
-									new Text({
-										text: "Error"
-									})
-								]
-							}),
 							contentHeight: "50%",
 							contentWidth: "50%",
 							verticalScrolling: false
