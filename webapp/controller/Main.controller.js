@@ -594,8 +594,8 @@ sap.ui.define([
 						that.oMessageView.setModel(that.localModel);
 						var that2 = that;
 						debugger;
-						// that.rowHighlight(allMessages);
-						// debugger;
+						that.rowHighlight(allMessages);
+						debugger;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
 							buttons: [new sap.m.Button({
