@@ -51,9 +51,9 @@
 						</smartFilterBar:layoutData>
 					</smartFilterBar:SmartFilterBar>
 					<!--<smartTable:SmartTable id="smartTable" smartFilterId="smartFilterBar" useExportToExcel="true" useVariantManagement="false"-->
-					<!--	useTablePersonalisation="false" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"-->
-					<!--	class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable"-->
-					<!--	entitySet="local>/data"  >-->
+					<!-- useTablePersonalisation="false" header="Materials" showRowCount="true" persistencyKey="SmartTableRefApp_Explored" enableAutoBinding="true"-->
+					<!-- class="sapUiResponsiveContentPadding" beforeRebindTable="onBeforeRebindTable"-->
+					<!-- entitySet="local>/data"  >-->
 					<!--<smartTable:customToolbar>-->
 					<!--<OverflowToolbar design="Transparent">-->
 					<!-- <ToolbarSpacer/>-->
@@ -136,95 +136,203 @@
 					<!-- </ColumnListItem>-->
 					<!-- </items>-->
 					<!--</Table>-->
-					<t:Table id="idTable" rows="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}" selectionMode="Single">
-						<t:extension>
-							<Toolbar>
-								<Title id="idTopTitle" text="Upload Data ({local>/title})"/>
+					<smartTable:SmartTable entitySet="DSAYTY" smartFilterId="smartFilterBar" useExportToExcel="false" beforeExport="onBeforeExport"
+						useVariantManagement="true" useTablePersonalisation="true" header="Data " showRowCount="true" persistencyKey="SmartTableRefApp_Explored"
+						enableAutoBinding="true" class="sapUiResponsiveContentPadding" tableType="ResponsiveTable" tableBindingPath="local>/data">
+						<smartTable:customToolbar>
+							<OverflowToolbar design="Transparent">
 								<ToolbarSpacer/>
-								<!--<SearchField width="30%" search="onSearch" placeholder="enter location" sap-icon://settings></SearchField>-->
-								<Button icon="sap-icon://settings" press="onSetting" text="Setting"></Button>
-								<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>
+								<Button icon="sap-icon://add" press="onAdd"></Button>
 								<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>
-							</Toolbar>
+							</OverflowToolbar>
+						</smartTable:customToolbar>
+						<t:Table id="idTable" rows="{path : 'local>/data', filters: [{path: 'Zcurrency', operator: 'NE', value1: 'D'}]}" selectionMode="Single">
+							<!--<t:extension>-->
+							<!-- <Toolbar>-->
+							<!-- <Title id="idTopTitle" text="Upload Data ({local>/title})"/>-->
+							<!-- <ToolbarSpacer/>-->
+							<!--<SearchField width="30%" search="onSearch" placeholder="enter location" sap-icon://settings></SearchField>-->
+							<!-- <Button icon="sap-icon://settings" press="onSetting" text="Setting"></Button>-->
+							<!-- <Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>-->
+							<!--<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>-->
+							<!-- </Toolbar>-->
 							<!--</OverflowToolbar>-->
-						</t:extension>
-						<t:rowSettingsTemplate>
-							<t:RowSettings highlight="{Location}"/>
-						</t:rowSettingsTemplate>
-						<t:columns>
-							<t:Column id="Location" width="9rem" sortProperty="Zzlocation" hAlign="Center">
-								<t:customData>
-									<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlocation","columnIndex":"1"}'/>
-								</t:customData>
-								<Label text="Location"/>
-								<t:template>
-									<Text text="{local>Zzlocation}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="CostCollector" width="9rem" sortProperty="Zzcostcol" hAlign="Center">
-								<t:customData>
-									<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","columnIndex":"2"}'/>
-								</t:customData>
-								<Label text="Cost Collector"/>
-								<t:template>
-									<Text text="{local>Zzcostcol}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="MaterialorDescription" width="13rem" sortProperty="Zzmatprod" hAlign="Center">
-								<Label text="Material"/>
-								<t:template>
-									<Text text="{local>Zzmatprod}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="EndDate" width="8rem" sortProperty="Zzenddate" hAlign="Center">
-								<Label text="End Date"/>
-								<t:template>
-									<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="QuantityProduced" width="10rem" hAlign="Right" sortProperty="Zzqtyprods">
-								<Label text="Quantity Produced"/>
-								<t:template>
-									<Text text="{local>Zzqtyprods}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="MaterialCost" width="9rem" hAlign="Right" sortProperty="Zzmatcosts">
-								<Label text="Material Cost"/>
-								<t:template>
-									<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="LaborCost" width="8rem" hAlign="Right" sortProperty="Zzlabcosts">
-								<Label text="Labor Cost"/>
-								<t:template>
-									<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="MachineCost" width="8rem" hAlign="Right" sortProperty="Zzmchcosts">
-								<Label text="Machine Cost"/>
-								<t:template>
-									<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="UnitCost" width="8rem" hAlign="Right" sortProperty="Zzunitcosts">
-								<Label text="Unit Cost"/>
-								<t:template>
-									<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
-								</t:template>
-							</t:Column>
-							<t:Column id="Options" width="11rem" hAlign="Center">
-								<Label text="Options"/>
-								<t:template>
-									<HBox>
-										<Button icon="sap-icon://edit" press="onEdit"></Button>
-										<Button class="sapUiTinyMarginBegin" icon="sap-icon://delete" press="onDelete"></Button>
-										<Button class="sapUiTinyMarginBegin" icon="sap-icon://copy" press="onCopy"></Button>
-									</HBox>
-								</t:template>
-							</t:Column>
-						</t:columns>
-					</t:Table>
-					<!--</smartTable:SmartTable>-->
+							<!--</t:extension>-->
+							<!--<t:rowSettingsTemplate>-->
+							<!-- <t:RowSettings highlight="{Location}"/>-->
+							<!--</t:rowSettingsTemplate>-->
+							<t:columns>
+								<!--<t:Column id="Location" width="9rem" sortProperty="Zzlocation" hAlign="Center">-->
+								<!-- <t:customData>-->
+								<!-- <core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlocation","columnIndex":"1"}'/>-->
+								<!-- </t:customData>-->
+								<!-- <Label text="Location"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{local>Zzlocation}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="Location" width="auto" sortProperty="Zzlocation" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlocation","leadingProperty": "local>Zzlocation"}'/>
+									</t:customData>
+									<Text text="Location"/>
+									<t:template>
+										<Text text="{local>Zzlocation}"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="CostCollector" width="9rem" sortProperty="Zzcostcol" hAlign="Center">-->
+								<!-- <t:customData>-->
+								<!-- <core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","columnIndex":"2"}'/>-->
+								<!-- </t:customData>-->
+								<!-- <Label text="Cost Collector"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{local>Zzcostcol}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="CostCollector" width="auto" sortProperty="Zzcostcol" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","leadingProperty": "local>Zzcostcol"}'/>
+									</t:customData>
+									<Text text="Cost Collector"/>
+									<t:template>
+										<Text text="{local>Zzcostcol}"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="MaterialorDescription" width="13rem" sortProperty="Zzmatprod" hAlign="Center">-->
+								<!-- <Label text="Material"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{local>Zzmatprod}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="MaterialorDescription" width="auto" sortProperty="Zzmatprod" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzmatprod","leadingProperty": "local>Zzmatprod"}'/>
+									</t:customData>
+									<Text text="Material"/>
+									<t:template>
+										<Text text="{local>Zzmatprod}"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="EndDate" width="8rem" sortProperty="Zzenddate" hAlign="Center">-->
+								<!-- <Label text="End Date"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="EndDate" width="auto" sortProperty="Zzenddate" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzenddate","leadingProperty": "local>Zzenddate"}'/>
+									</t:customData>
+									<Text text="End Date"/>
+									<t:template>
+										<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="QuantityProduced" width="10rem" hAlign="Right" sortProperty="Zzqtyprods">-->
+								<!-- <Label text="Quantity Produced"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{local>Zzqtyprods}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="QuantityProduced" width="auto" sortProperty="Zzqtyprods" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzqtyprods","leadingProperty": "local>Zzqtyprods"}'/>
+									</t:customData>
+									<Text text="Quantity Produced"/>
+									<t:template>
+										<Text text="{local>Zzqtyprods}"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="MaterialCost" width="9rem" hAlign="Right" sortProperty="Zzmatcosts">-->
+								<!-- <Label text="Material Cost"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="MaterialCost" width="auto" sortProperty="Zzmatcosts" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzmatcosts","leadingProperty": "local>Zzmatcosts"}'/>
+									</t:customData>
+									<Text text="Material Cost"/>
+									<t:template>
+										<Text text="{path: 'local>Zzmatcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="LaborCost" width="8rem" hAlign="Right" sortProperty="Zzlabcosts">-->
+								<!-- <Label text="Labor Cost"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="LaborCost" width="auto" sortProperty="Zzlabcosts" hAlign="Center">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlabcosts","leadingProperty": "local>Zzlabcosts"}'/>
+									</t:customData>
+									<Text text="Labor Cost"/>
+									<t:template>
+										<Text text="{path: 'local>Zzlabcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="MachineCost" width="8rem" hAlign="Right" sortProperty="Zzmchcosts">-->
+								<!-- <Label text="Machine Cost"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="MachineCost" width="auto" sortProperty="Zzmchcosts" hAlign="Right">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzmchcosts","leadingProperty": "local>Zzmchcosts"}'/>
+									</t:customData>
+									<Text text="Machine Cost"/>
+									<t:template>
+										<Text text="{path: 'local>Zzmchcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="UnitCost" width="8rem" hAlign="Right" sortProperty="Zzunitcosts">-->
+								<!-- <Label text="Unit Cost"/>-->
+								<!-- <t:template>-->
+								<!-- <Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column id="UnitCost" width="auto" sortProperty="Zzmchcosts" hAlign="Right">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzunitcosts","leadingProperty": "local>Zzunitcosts"}'/>
+									</t:customData>
+									<Text text="Unit Cost"/>
+									<t:template>
+										<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<!--<t:Column id="Options" width="11rem" hAlign="Center">-->
+								<!-- <Label text="Options"/>-->
+								<!-- <t:template>-->
+								<!-- <HBox>-->
+								<!--<Button icon="sap-icon://edit" press="onEdit"></Button>-->
+								<!--<Button class="sapUiTinyMarginBegin" icon="sap-icon://delete" press="onDelete"></Button>-->
+								<!--<Button class="sapUiTinyMarginBegin" icon="sap-icon://copy" press="onCopy"></Button>-->
+								<!-- </HBox>-->
+								<!-- </t:template>-->
+								<!--</t:Column>-->
+								<t:Column visible="true" width="9em">
+									<t:customData>
+										<core:CustomData key="p13nData" value='\{"columnKey": "TrfCdId","leadingProperty": "TrfCdId"}'/>
+									</t:customData>
+									<Text text="Options"/>
+									<t:template>
+										<HBox>
+											<!--<Button icon="sap-icon://edit" press="editTariffCode"/>-->
+											<Button icon="sap-icon://edit" press="onEdit"></Button>
+											<Button icon="sap-icon://delete" press="onDelete"></Button>
+											<Button icon="sap-icon://copy" press="onCopy"></Button>
+										</HBox>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+						<smartTable:layoutData>
+							<FlexItemData growFactor="1" baseSize="0%"/>
+						</smartTable:layoutData>
+					</smartTable:SmartTable>
 				</content>
 				<footer>
 					<Toolbar>
