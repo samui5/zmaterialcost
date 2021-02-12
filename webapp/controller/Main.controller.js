@@ -113,7 +113,7 @@ sap.ui.define([
 						that.localModel.setProperty("/title", data.results.length);
 					}
 				});
-			} else if (this.getView().byId("Zzenddate").getValue() !== "") {
+			} else if (this.getView().byId("Zzenddate").getValue() !== "") {debugger;
 				this.oDataModel.read("/MatCollAllSet", {
 					filters: [new Filter("Zzenddate", "EQ", this.getView().byId("Zzenddate").getValue())],
 					success: function(data) {
@@ -326,10 +326,10 @@ sap.ui.define([
 				var dataEndDate = this.dateSeperator(data[i].Zzenddate);
 				if (data[i].Zzmatprod === material && data[i].Zzlocation === location && data[i].Zzcostcol === collector && dataEndDate ===
 					endDate) {
-					return false;
+					return true;
 				}
 			}
-			return true;
+			return false;
 		},
 		onPressHandleSecureOkPopup: function(oEvent) {
 			var sValues = this.localModel.getProperty("/newEntry");
@@ -344,7 +344,7 @@ sap.ui.define([
 			if (sId === "idEdit--idButton") {
 				// this.editPath
 				var valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
-				if (valid === false) {
+				if (valid === true) {
 					MessageToast.show("Data Updated");
 				} else {
 					clonedData.Zcurrency = "U";
@@ -355,7 +355,7 @@ sap.ui.define([
 			} else {
 				var aData = this.localModel.getProperty("/data");
 				valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
-				if (valid === false) {
+				if (valid === true) {
 					MessageToast.show("Duplicate Data Cannot be added");
 				} else {
 					aData.splice(0, 0, clonedData);
@@ -385,14 +385,14 @@ sap.ui.define([
 
 			var aData = this.localModel.getProperty("/data");
 			var valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
-			if (valid === false) {
+			if (valid === true) {
 				MessageToast.show("Duplicate Data Cannot be added");
 			} else {
 				aData.splice(0, 0, clonedData);
 				this.localModel.setProperty("/data", aData);
 				this.localModel.setProperty("/title", aData.length);
+				this._oDialogSecure1.close();
 			}
-			this._oDialogSecure1.close();
 		},
 		onEdit: function(oEvent) {
 			this.editPath = oEvent.getSource().getParent().getParent().oBindingContexts.local.sPath;
@@ -685,8 +685,15 @@ sap.ui.define([
 						excelData[i].Zzunitcosts = parseFloat((parseInt(excelData[i].Zzqtyprods) + parseInt(excelData[i].Zzlabcosts) + parseInt(
 							excelData[i].Zzmchcosts)) / parseInt(excelData[i].Zzqtyprods)).toFixed(2);
 						excelData[i].Zcurrency = "N";
+						excelData[i].Zzenddate = new Date(excelData[i].Zzenddate);
+						var duplicate = that.dupValidator(excelData[i].Zzmatprod, excelData[i].Zzlocation, excelData[i].Zzcostcol, excelData[i].Zzenddate);
+						if (duplicate === true){
+							MessageToast.show("Duplicate Data found");
+							return;
+						}
 					}
-					// Setting the data to the local model 
+					// Setting the data to the local model
+					debugger;
 					that.localModel.setData({
 						data: JSON.parse(JSON.stringify(excelData)),
 						newEntry: {

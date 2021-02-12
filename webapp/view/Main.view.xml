@@ -40,7 +40,7 @@
 							<smartFilterBar:ControlConfiguration key="Zzenddate" index="4" label="End Date" groupId="_BASIC" width="300px" visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
 									<!--<DataPicker id="Zzenddate" ></DataPicker>-->
-									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM/dd/yyyy"/>
+									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM/dd/yyyy" valueFormat="dd.MM.yyyy" placeholder="mm/dd/yyyy"/>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
 							<smartFilterBar:ControlConfiguration key="Validated" filterType="single"/>
@@ -152,7 +152,7 @@
 							<t:RowSettings highlight="{Location}"/>
 						</t:rowSettingsTemplate>
 						<t:columns>
-							<t:Column id="Location" width="9rem" sortProperty="Zzlocation">
+							<t:Column id="Location" width="9rem" sortProperty="Zzlocation" hAlign="Center">
 								<t:customData>
 									<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzlocation","columnIndex":"1"}'/>
 								</t:customData>
@@ -161,7 +161,7 @@
 									<Text text="{local>Zzlocation}" wrapping="false"/>
 								</t:template>
 							</t:Column>
-							<t:Column id="CostCollector" width="9rem" sortProperty="Zzcostcol">
+							<t:Column id="CostCollector" width="9rem" sortProperty="Zzcostcol" hAlign="Center">
 								<t:customData>
 									<core:CustomData key="p13nData" value='\{"columnKey": "local>Zzcostcol","columnIndex":"2"}'/>
 								</t:customData>
@@ -170,13 +170,13 @@
 									<Text text="{local>Zzcostcol}" wrapping="false"/>
 								</t:template>
 							</t:Column>
-							<t:Column id="MaterialorDescription" width="13rem" sortProperty="Zzmatprod">
-								<Label text="Material or Description"/>
+							<t:Column id="MaterialorDescription" width="13rem" sortProperty="Zzmatprod" hAlign="Center">
+								<Label text="Material"/>
 								<t:template>
 									<Text text="{local>Zzmatprod}" wrapping="false"/>
 								</t:template>
 							</t:Column>
-							<t:Column id="EndDate" width="8rem" sortProperty="Zzenddate">
+							<t:Column id="EndDate" width="8rem" sortProperty="Zzenddate" hAlign="Center">
 								<Label text="End Date"/>
 								<t:template>
 									<Text text="{path : 'local>Zzenddate', formatter: '.formatter.getSAPFormattedDate'}" wrapping="false"/>
@@ -212,7 +212,7 @@
 									<Text text="{path: 'local>Zzunitcosts', formatter: '.formatter.getCurrencyFormat'}" wrapping="false"/>
 								</t:template>
 							</t:Column>
-							<t:Column id="Options" width="11rem">
+							<t:Column id="Options" width="11rem" hAlign="Center">
 								<Label text="Options"/>
 								<t:template>
 									<HBox>
