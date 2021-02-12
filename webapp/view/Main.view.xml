@@ -40,7 +40,7 @@
 							<smartFilterBar:ControlConfiguration key="Zzenddate" index="4" label="End Date" groupId="_BASIC" width="300px" visibleInAdvancedArea="true">
 								<smartFilterBar:customControl>
 									<!--https://answers.sap.com/questions/323063/date-value-is-getting-reduced-by-one-day-while-pas.html-->
-									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM/dd/yyyy" valueFormat="dd.MM.yyyy" placeholder="mm/dd/yyyy"/>
+									<DatePicker id="Zzenddate" change="handleChange" displayFormat="MM/dd/yyyy" placeholder="MM/dd/yyyy"/>
 								</smartFilterBar:customControl>
 							</smartFilterBar:ControlConfiguration>
 							<smartFilterBar:ControlConfiguration key="Validated" filterType="single"/>

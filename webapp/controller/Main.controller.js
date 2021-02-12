@@ -113,9 +113,11 @@ sap.ui.define([
 						that.localModel.setProperty("/title", data.results.length);
 					}
 				});
-			} else if (this.getView().byId("Zzenddate").getValue() !== "") {
+			} else if (this.getView().byId("Zzenddate").getValue() !== "") {debugger;
+				var d=this.getView().byId("Zzenddate").getDateValue();
+				d.setMinutes( d.getMinutes() + 480);
 				this.oDataModel.read("/MatCollAllSet", {
-					filters: [new Filter("Zzenddate", "EQ", this.getView().byId("Zzenddate").getDateValue())],
+					filters: [new Filter("Zzenddate", "EQ", d)],
 					success: function(data) {
 						that.localModel.setProperty("/data", data.results);
 						that.localModel.setProperty("/title", data.results.length);
