@@ -345,11 +345,13 @@ sap.ui.define([
 				// this.editPath
 				var valid = this.dupValidator(clonedData.Zzmatprod, clonedData.Zzlocation, clonedData.Zzcostcol, clonedData.Zzenddate);
 				if (valid === true) {
-					MessageToast.show("Data Updated");
+					// MessageToast.show("Data Updated");
+					this.oDialogSecure.close();
 				} else {
 					clonedData.Zcurrency = "U";
 					this.localModel.setProperty(this.editPath, clonedData);
 					this.editPath = "";
+					MessageToast.show("Data Updated");
 					this.oDialogSecure.close();
 				}
 			} else {
@@ -365,7 +367,7 @@ sap.ui.define([
 				}
 
 			}
-			this._oDialogSecure.close();
+			// this._oDialogSecure.close();
 		},
 		onPressHandleSecureCopyPopup: function(oEvent) {
 			var sValues = this.localModel.getProperty("/newEntry");
