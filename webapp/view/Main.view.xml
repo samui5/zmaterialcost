@@ -142,7 +142,7 @@
 						<smartTable:customToolbar>
 							<OverflowToolbar design="Transparent">
 								<ToolbarSpacer/>
-								<Button icon="sap-icon://add" press="onAdd"></Button>
+								<Button icon="sap-icon://add" press="onAdd" text="New Entry"></Button>
 								<Button icon="sap-icon://excel-attachment" press="onAddExcelData" text="Upload Excel"></Button>
 							</OverflowToolbar>
 						</smartTable:customToolbar>
