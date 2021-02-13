@@ -113,9 +113,13 @@ sap.ui.define([
 						that.localModel.setProperty("/title", data.results.length);
 					}
 				});
-			} else if (this.getView().byId("Zzenddate").getValue() !== "") {debugger;
-				var d=this.getView().byId("Zzenddate").getDateValue();
-				d.setMinutes( d.getMinutes() + 480);
+			} else if (this.getView().byId("Zzenddate").getValue() !== "") {
+				var d = this.getView().byId("Zzenddate").getDateValue();
+				if (d.getTimezoneOffset() > 0) {
+					d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+				} else {
+					d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+				}
 				this.oDataModel.read("/MatCollAllSet", {
 					filters: [new Filter("Zzenddate", "EQ", d)],
 					success: function(data) {
@@ -610,7 +614,7 @@ sap.ui.define([
 											// Type that will be used to generate the content. Own ExportType's can be created to support other formats
 											exportType: new sap.ui.core.util.ExportTypeCSV({
 												separatorChar: ",",
-												charset:"urf-8"
+												charset: "urf-8"
 											}),
 
 											// Pass in the model created above
@@ -691,7 +695,7 @@ sap.ui.define([
 						excelData[i].Zcurrency = "N";
 						excelData[i].Zzenddate = new Date(excelData[i].Zzenddate);
 						var duplicate = that.dupValidator(excelData[i].Zzmatprod, excelData[i].Zzlocation, excelData[i].Zzcostcol, excelData[i].Zzenddate);
-						if (duplicate === true){
+						if (duplicate === true) {
 							MessageToast.show("Duplicate Data found");
 							return;
 						}
