@@ -602,7 +602,7 @@ sap.ui.define([
 						that.oMessageView.setModel(that.localModel);
 						var that2 = that;
 						debugger;
-						that.rowHighlight(allMessages);
+						// that.rowHighlight(allMessages);
 						debugger;
 						that.oDialog = new sap.m.Dialog({
 							resizable: true,
@@ -668,12 +668,12 @@ sap.ui.define([
 				}
 			});
 		},
-		rowHighlight: function(omsg) {
-			debugger;
-			this.getView().byId("idTable").setRowSettingsTemplate(new RowSettings({
-				highlight: "{Location}"
-			}));
-		},
+		// rowHighlight: function(omsg) {
+		// 	debugger;
+		// 	this.getView().byId("idTable").setRowSettingsTemplate(new RowSettings({
+		// 		highlight: "{Location}"
+		// 	}));
+		// },
 		_import: function(file) {
 			var that = this;
 			var excelData = {};
